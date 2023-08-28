@@ -32,15 +32,15 @@ class Scene:
 class MainMenuScene(Scene):
     def __init__(self, game):
         super().__init__(game)
-        self.background = pg.image.load("image/Mainmenu.png")
+        self.background = pg.image.load("./image/Mainmenu.png")
 
-        self.b1 = pg.image.load("image/START_NEW_CITY.png")
+        self.b1 = pg.image.load("./image/START_NEW_CITY.png")
         self.button_play = Button.Button(self, 134, 358.5, self.b1, 1.0)
 
-        self.b2 = pg.image.load("image/LOAD_A_CITY.png")
+        self.b2 = pg.image.load("./image/LOAD_A_CITY.png")
         self.button_load = Button.Button(self, 595, 363, self.b2, 1.0)
 
-        self.b3 = pg.image.load("image/Settings.png")
+        self.b3 = pg.image.load("./image/Settings.png")
         self.button_Settings = Button.Button(self, 370, 460, self.b3, 1.0)
 
     def handle_events(self):
@@ -73,26 +73,26 @@ class MainMenuScene(Scene):
 class SettingsScene(Scene):
     def __init__(self, game):
         super().__init__(game)
-        self.background = pg.image.load("image/Mainmenu.png")
+        self.background = pg.image.load("./image/Mainmenu.png")
         font = pg.font.SysFont(None, 55)
 
-        self.b4 = pg.image.load("image/Back.png")
+        self.b4 = pg.image.load("./image/Back.png")
         self.button_back = Button.Button(self.game, 134, 540, self.b4, 1.0)
 
         # Buttons für Einstellungen
-        self.up = pg.image.load("image/Up.png")
+        self.up = pg.image.load("./image/Up.png")
         self.button_up = Button.Button(self.game, 134, 358.5, self.up, 1.0)
         self.key_up = font.render("w", True, (255, 255, 255))
 
-        self.down = pg.image.load("image/Down.png")
+        self.down = pg.image.load("./image/Down.png")
         self.button_down = Button.Button(self.game, 134, 450, self.down, 1.0)
         self.key_down = font.render("s", True, (255, 255, 255))
 
-        self.left = pg.image.load("image/Left.png")
+        self.left = pg.image.load("./image/Left.png")
         self.button_left = Button.Button(self.game, 600, 358.5, self.left, 1.0)
         self.key_left = font.render("a", True, (255, 255, 255))
 
-        self.right = pg.image.load("image/Right.png")
+        self.right = pg.image.load("./image/Right.png")
         self.button_right = Button.Button(self.game, 600, 450, self.right, 1.0)
         self.key_right = font.render("d", True, (255, 255, 255))
 
