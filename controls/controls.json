@@ -1,8 +1,18 @@
- [
-   {
-   "move_up": "w",
-   "move_down": "s",
-   "move_left": "a",
-   "move_right": "d"
-  },{}
- ]
+[
+    {
+        "default": {
+            "map_move_up": "w",
+            "map_move_down": "s",
+            "map_move_left": "a",
+            "map_move_right": "d"
+        }
+    },
+    {
+        "manually": {
+            "map_move_up": "f",
+            "map_move_down": "f",
+            "map_move_left": "f",
+            "map_move_right": "f"
+        }
+    }
+]
