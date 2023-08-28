@@ -112,22 +112,18 @@ class SettingsScene(Scene):
         if self.button_up.push():
             new_key = self.get_user_input()  # Benutzereingabe erfassen
             self.update_control("map_move_up", new_key)  # Tastenzuordnung aktualisieren
-            self.update(True)
 
         if self.button_down.push():
             new_key = self.get_user_input()
             self.update_control("map_move_down", new_key)
-            self.update(True)
 
         if self.button_left.push():
             new_key = self.get_user_input()
             self.update_control("map_move_left", new_key)
-            self.update(True)
 
         if self.button_right.push():
             new_key = self.get_user_input()
             self.update_control("map_move_right", new_key)
-            self.update(True)
 
     def get_user_input(self):
         user_input = ""
@@ -143,14 +139,14 @@ class SettingsScene(Scene):
 
     def update_control(self, control_name, new_key):
         self.controls[1]["manually"][control_name] = new_key
-
-        with open("./controls/controls.json", "w") as json_file:
-            json.dump(self.controls, json_file, indent=4)
+        self.update(True)
 
     def update(self, new_key=False):
         # Aktualisierung der Einstellungen hier
         super().handle_events()
         if new_key:
+            with open("./controls/controls.json", "w") as json_file:
+                json.dump(self.controls, json_file, indent=4)
             self.key_up = self.font.render(self.controls[1]["manually"]["map_move_up"], True, (255, 255, 255))
             self.key_down = self.font.render(self.controls[1]["manually"]["map_move_down"], True, (255, 255, 255))
             self.key_left = self.font.render(self.controls[1]["manually"]["map_move_left"], True, (255, 255, 255))
@@ -191,12 +187,19 @@ Traceback (most recent call last):
 class GameScene(Scene):
     def __init__(self, game):
         super().__init__(game)
+        self.window_width = 1400
+        self.window_height = 850
+
+        self.window = pg.display.set_mode((self.window_width, self.window_height))
+
+        self.top_menu = pg.image.load("./image/Topmenu.png")
 
     def handle_events(self):
         super().handle_events()
+
 
     def update(self):
         super().handle_events()
 
     def draw(self):
-        pass
+        self.screen.blit(self.top_menu, (0, 0))
