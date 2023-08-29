@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 0.3V">
+    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 0.3.1V">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -145,7 +145,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693245354738</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Alpha 0.3.1V">
+      <option name="closed" value="true" />
+      <created>1693254379871</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1693254379871</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -176,6 +184,7 @@
     <MESSAGE value="0.1V" />
     <MESSAGE value="Alpha 0.2V" />
     <MESSAGE value="Alpha 0.3V" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alpha 0.3V" />
+    <MESSAGE value="Alpha 0.3.1V" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alpha 0.3.1V" />
   </component>
 </project>
