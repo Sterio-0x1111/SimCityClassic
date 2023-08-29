@@ -252,15 +252,12 @@ class GameScene(Scene):
                 self.key_pressed = pg.key.get_pressed()
 
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-                print("1")
                 self.drawing = True
                 self.start_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
                 self.end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
             elif event.type == pg.MOUSEMOTION and self.drawing:
-                print("2")
                 end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
             elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
-                print("3")
                 self.drawing = False
                 for y in range(min(self.start_pos[1] // self.CELL_SIZE, self.end_pos[1] // self.CELL_SIZE),
                                max(self.start_pos[1] // self.CELL_SIZE, self.end_pos[1] // self.CELL_SIZE) + 1):
