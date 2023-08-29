@@ -50,6 +50,8 @@ class MainMenuScene(Scene):
         if self.button_play.push():
             self.running = False
             game_scene = GameScene(self.game)
+            pg.time.delay(500)
+            super().handle_events()
             game_scene.run()
 
         elif self.button_load.push():
@@ -190,16 +192,144 @@ class GameScene(Scene):
         self.window_width = 1400
         self.window_height = 850
 
+        self.GRID_SIZE = 100
+        self.CELL_SIZE = 30
+
+        # WINDOW_WIDTH = 1200
+        # WINDOW_HEIGHT = 700
+
+        self.BLACK = (0, 0, 0)
+        self.RED = (255, 0, 0)
+        self.BLUE = (0, 0, 255)
+        self.YELLOW = (255, 255, 0)
+
         self.window = pg.display.set_mode((self.window_width, self.window_height))
+
+        # Transparente Surface für das Raster
+        self.grid_surface = pg.Surface((self.GRID_SIZE * self.CELL_SIZE, self.GRID_SIZE * self.CELL_SIZE), pg.RESIZABLE)
+        self.grid_surface.fill(self.BLACK)
+
+        # Felder initialisieren
+        try:
+            with open("./map/Field.json", "r") as json_file:
+                self.fields = json.load(json_file)
+        except FileNotFoundError:
+            # self.fields = [{"state": 0, "x": x * self.CELL_SIZE, "y": y * self.CELL_SIZE} for y in range(self.GRID_SIZE) for x in range(self.GRID_SIZE)]
+            print("Error")
+            exit()
+
+        self.scroll_x = 0
+        self.scroll_y = 0
+
+        self.drawing = False
+        self.start_pos = None
+        self.end_pos = None
+
+        self.key_pressed = False
+        self.o = True
+        self.p = False
+        self.l = False
 
         self.top_menu = pg.image.load("./image/Topmenu.png")
 
-    def handle_events(self):
-        super().handle_events()
+        self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
+        self.grid_image_forest = pg.image.load("../Simcity/image/forest.png")
+        self.grid_image_water = pg.image.load("../Simcity/image/Water.png")
 
+    def handle_events(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.running = False
+
+                # Speichern der Felder in JSON-Datei
+                try:
+                    with open("./map/Field.json", "w") as json_file:
+                        json.dump(self.fields, json_file)
+                except FileNotFoundError:
+                    self.running = False
+
+            if event.type == pg.KEYDOWN:
+                self.key_pressed = pg.key.get_pressed()
+
+            if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+                print("1")
+                self.drawing = True
+                self.start_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
+                self.end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
+            elif event.type == pg.MOUSEMOTION and self.drawing:
+                print("2")
+                end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
+            elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
+                print("3")
+                self.drawing = False
+                for y in range(min(self.start_pos[1] // self.CELL_SIZE, self.end_pos[1] // self.CELL_SIZE),
+                               max(self.start_pos[1] // self.CELL_SIZE, self.end_pos[1] // self.CELL_SIZE) + 1):
+                    for x in range(min(self.start_pos[0] // self.CELL_SIZE, self.end_pos[0] // self.CELL_SIZE),
+                                   max(self.start_pos[0] // self.CELL_SIZE, self.end_pos[0] // self.CELL_SIZE) + 1):
+                        if 0 <= x < self.GRID_SIZE and 0 <= y < self.GRID_SIZE:
+                            idx = y * self.GRID_SIZE + x
+                            if self.key_pressed[pg.K_o] or self.o:
+                                self.fields[idx]["state"] = 1
+                                self.o = True
+                                self.p = False
+                                self.l = False
+                            if self.key_pressed[pg.K_p] or self.p:
+                                self.fields[idx]["state"] = 2
+                                self.o = False
+                                self.p = True
+                                self.l = False
+                            if self.key_pressed[pg.K_l] or self.l:
+                                self.fields[idx]["state"] = 3
+                                self.o = False
+                                self.p = False
+                                self.l = True
 
     def update(self):
         super().handle_events()
+        keys = pg.key.get_pressed()
+        if keys[pg.K_w]:
+            self.scroll_y += self.CELL_SIZE
+        if keys[pg.K_s]:
+            self.scroll_y -= self.CELL_SIZE
+        if keys[pg.K_a]:
+            self.scroll_x += self.CELL_SIZE
+        if keys[pg.K_d]:
+            self.scroll_x -= self.CELL_SIZE
+
+        # Mausposition abfragen
+        self.mouse_x, self.mouse_y = pg.mouse.get_pos()
+        self.mouse_x -= self.scroll_x
+        self.mouse_y -= self.scroll_y
+        self.mouse_x //= self.CELL_SIZE
+        self.mouse_y //= self.CELL_SIZE
 
     def draw(self):
         self.screen.blit(self.top_menu, (0, 0))
+
+        for field in self.fields:
+            x = field["x"]
+            y = field["y"]
+            state = field["state"]
+
+            if state:
+                self.grid_surface.blit(self.grid_image_ground, (x, y))
+            if state == 2:
+                self.grid_surface.blit(self.grid_image_forest, (x, y))
+            if state == 3:
+                self.grid_surface.blit(self.grid_image_water, (x, y))
+            if not state in range(0, 4):
+                pg.draw.rect(self.grid_surface, self.BLACK, (x, y, self.CELL_SIZE, self.CELL_SIZE))
+
+            # Zeichne blauen Rahmen um das Feld, über das der Mauszeiger schwebt
+            if 0 <= self.mouse_x < self.GRID_SIZE and 0 <= self.mouse_y < self.GRID_SIZE:
+                pg.draw.rect(self.grid_surface, self.BLUE, (self.mouse_x * self.CELL_SIZE, self.mouse_y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE), 2)
+
+        self.window.fill(self.BLACK)
+        self.window.blit(self.grid_surface, (self.scroll_x, self.scroll_y))
+
+        if self.drawing and self.start_pos and self.end_pos:
+            rect_x = min(self.start_pos[0], self.end_pos[0]) + self.scroll_x
+            rect_y = min(self.start_pos[1], self.end_pos[1]) + self.scroll_y
+            rect_width = abs(self.end_pos[0] - self.start_pos[0])
+            rect_height = abs(self.end_pos[1] - self.start_pos[1])
+            pg.draw.rect(self.window, self.YELLOW, (rect_x, rect_y, rect_width, rect_height), 3)

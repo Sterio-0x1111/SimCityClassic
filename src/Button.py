@@ -20,7 +20,7 @@ class Button:
             if (pg.mouse.get_pressed()[0] == 1) and (self.clicked is False):
                 action = True
                 self.clicked = True
-                pg.time.delay(100) # Intervall von 0.2 Sekunde, da sofortiger Übergang
+                pg.time.delay(200) # Intervall von 0.2 Sekunde, da sofortiger Übergang
 
         if pg.mouse.get_pressed()[0] == 0:
             self.clicked = False

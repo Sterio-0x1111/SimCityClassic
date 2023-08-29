@@ -20,12 +20,10 @@ grid_surface.fill(BLACK)
 
 # Felder initialisieren
 try:
-    with open("Field.json", "r") as json_file:
+    with open("../map/Field.json", "r") as json_file:
         fields = json.load(json_file)
 except FileNotFoundError:
-    fields = [{"state": 0, "x": x * CELL_SIZE, "y": y * CELL_SIZE} for y in range(GRID_SIZE) for x in range(GRID_SIZE)]
-    with open("Fail.json", "w") as json_file:
-        json.dump(fields, json_file, indent=4)
+    exit()
 
 scroll_x = 0
 scroll_y = 0
@@ -128,7 +126,7 @@ while running:
     pg.display.update()
 
     # Speichern der Felder in JSON-Datei
-    with open("Field.json", "w") as json_file:
+    with open("../map/Field.json", "w") as json_file:
         json.dump(fields, json_file)
 
 pg.quit()
