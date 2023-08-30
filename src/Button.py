@@ -27,5 +27,8 @@ class Button:
 
         return action
 
+    def set_invisible(self):
+        self.image.set_alpha(0)
+
     def draw(self):
         self.window.blit(self.image, (self.rect.x, self.rect.y))

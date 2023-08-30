@@ -241,6 +241,65 @@ class GameScene(Scene):
         self.leftbelow = pg.image.load("./image/Leftbelow.png")
         self.bottom = pg.image.load("./image/Bottom.png")
 
+        # Button
+        self.font = pg.font.SysFont(None, 33)
+
+        self.demolition = pg.image.load("./image/Dummy.png")
+        self.demolition = Button.Button(self.game.window, 4, 115, self.demolition, 1.0)
+        self.demolition_text = self.font.render("Demolition: 1€", True, self.BLUE)
+
+        self.power_lines = pg.image.load("./image/Dummy.png")
+        self.power_lines = Button.Button(self.game.window, 4, 198, self.power_lines, 1.0)
+        self.power_lines_text = self.font.render("Power lines: 5€", True, self.BLUE)
+
+        self.park = pg.image.load("./image/Dummy.png")
+        self.park = Button.Button(self.game.window, 4, 281, self.park, 1.0)
+        self.park_text = self.font.render("Park: 50€", True, self.BLUE)
+
+        self.commercial = pg.image.load("./image/Dummy.png")
+        self.commercial = Button.Button(self.game.window, 4, 363, self.commercial, 1.0)
+        self.commercial_text = self.font.render("Commercial: 150€", True, self.BLUE)
+
+        self.police_station = pg.image.load("./image/Dummy.png")
+        self.police_station = Button.Button(self.game.window, 4, 445, self.police_station, 1.0)
+        self.police_station_text = self.font.render("Police station: 500€", True, self.BLUE)
+
+        self.stadium = pg.image.load("./image/Dummy.png")
+        self.stadium = Button.Button(self.game.window, 4, 527, self.stadium, 1.0)
+        self.stadium_text = self.font.render("Stadium: 2000€", True, self.BLUE)
+
+        self.ship_port = pg.image.load("./image/Dummy.png")
+        self.ship_port = Button.Button(self.game.window, 4, 610, self.ship_port, 1.0)
+        self.ship_port_text = self.font.render("Ship port: 3000€", True, self.BLUE)
+
+        self.road = pg.image.load("./image/Dummy.png")
+        self.road = Button.Button(self.game.window, 76, 115, self.road, 1.0)
+        self.road_text = self.font.render("Road: 10€", True, self.BLUE)
+
+        self.railroad = pg.image.load("./image/Dummy.png")
+        self.railroad = Button.Button(self.game.window, 76, 198, self.railroad, 1.0)
+        self.railroad_text = self.font.render("Railroad: 15€", True, self.BLUE)
+
+        self.residential = pg.image.load("./image/Dummy.png")
+        self.residential = Button.Button(self.game.window, 76, 281, self.residential, 1.0)
+        self.residential_text = self.font.render("Residential: 100€", True, self.BLUE)
+
+        self.industrial = pg.image.load("./image/Dummy.png")
+        self.industrial = Button.Button(self.game.window, 76, 363, self.industrial, 1.0)
+        self.industrial_text = self.font.render("Industrial: 200€", True, self.BLUE)
+
+        self.fire_station = pg.image.load("./image/Dummy.png")
+        self.fire_station = Button.Button(self.game.window, 76, 445, self.fire_station, 1.0)
+        self.fire_station_text = self.font.render("Fire station: 500€", True, self.BLUE)
+
+        self.power_plant = pg.image.load("./image/Dummy.png")
+        self.power_plant = Button.Button(self.game.window, 76, 527, self.power_plant, 1.0)
+        self.power_plant_text = self.font.render("Power plant: 5000€", True, self.BLUE)
+
+        self.airport = pg.image.load("./image/Dummy.png")
+        self.airport = Button.Button(self.game.window, 76, 610, self.airport, 1.0)
+        self.airport_text = self.font.render("Airport: 3000€", True, self.BLUE)
+
         self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
         self.grid_image_forest = pg.image.load("../Simcity/image/forest.png")
         self.grid_image_water = pg.image.load("../Simcity/image/Water.png")
@@ -340,13 +399,58 @@ class GameScene(Scene):
 
         self.window.fill(self.BLACK)
         print(self.scroll_x, self.scroll_y)
+
         self.window.blit(self.grid_surface, (self.scroll_x, self.scroll_y))
+
+        self.screen.blit(self.bottom, (150, 795))
+
+        # Button
+        self.demolition.draw()
+        self.screen.blit(self.demolition_text, (155, 800))
+
+        self.power_lines.draw()
+        self.screen.blit(self.power_lines_text, (155, 800))
+
+        self.park.draw()
+        self.screen.blit(self.park_text, (155, 800))
+
+        self.commercial.draw()
+        self.screen.blit(self.commercial_text, (155, 800))
+
+        self.police_station.draw()
+        self.screen.blit(self.police_station_text, (155, 800))
+
+        self.stadium.draw()
+        self.screen.blit(self.stadium_text, (155, 800))
+
+        self.ship_port.draw()
+        self.screen.blit(self.ship_port_text, (155, 800))
+
+        self.road.draw()
+        self.screen.blit(self.road_text, (155, 800))
+
+        self.railroad.draw()
+        self.screen.blit(self.railroad_text, (155, 800))
+
+        self.residential.draw()
+        self.screen.blit(self.residential_text, (155, 800))
+
+        self.industrial.draw()
+        self.screen.blit(self.industrial_text, (155, 800))
+
+        self.fire_station.draw()
+        self.screen.blit(self.fire_station_text, (155, 800))
+
+        self.power_plant.draw()
+        self.screen.blit(self.power_plant_text, (155, 800))
+
+        self.airport.draw()
+        self.screen.blit(self.airport_text, (155, 800))
 
         self.screen.blit(self.top_menu, (0, 0))
         self.screen.blit(self.top, (0, 50))
         self.screen.blit(self.left_menu, (0, 100))
         self.screen.blit(self.leftbelow, (0, 700))
-        self.screen.blit(self.bottom, (150, 795))
 
         if self.drawing and self.start_pos and self.end_pos:
             print(self.start_pos, self.end_pos)
