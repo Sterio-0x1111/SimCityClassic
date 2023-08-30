@@ -3,7 +3,7 @@ import json
 
 pg.init()
 
-GRID_SIZE = 100
+GRID_SIZE = 200
 CELL_SIZE = 30
 WINDOW_WIDTH = 1200
 WINDOW_HEIGHT = 700
@@ -15,15 +15,26 @@ BLUE = (0, 0, 255)
 
 window = pg.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT), pg.RESIZABLE)
 
-grid_surface = pg.Surface((GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE), pg.RESIZABLE) # Transparente Surface für das Raster
+# Transparente Surface für das Raster
+grid_surface = pg.Surface((GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE), pg.RESIZABLE)
 grid_surface.fill(BLACK)
 
 # Felder initialisieren
-try:
-    with open("../map/Field.json", "r") as json_file:
-        fields = json.load(json_file)
-except FileNotFoundError:
-    exit()
+fields = [{"state": 0, "x": x * CELL_SIZE, "y": y * CELL_SIZE} for y in range(GRID_SIZE) for x in range(GRID_SIZE)]
+
+#try:
+#    with open("../map/Field.json", "r") as json_file:
+#        fields = json.load(json_file)
+#except FileNotFoundError:
+#    print("Error")
+#    exit()
+
+i = 0
+for field in fields:
+    print(field["state"])
+    if field["state"] == 0:
+        field["state"] = 1
+    i += 1
 
 scroll_x = 0
 scroll_y = 0
@@ -31,12 +42,16 @@ scroll_y = 0
 drawing = False
 start_pos = None
 end_pos = None
+
+key_pressed = pg.key.get_pressed()
 o = False
 p = False
 l = False
 
+clock = pg.time.Clock()
 running = True
 while running:
+    clock.tick(60)
     for event in pg.event.get():
         if event.type == pg.QUIT:
             running = False
@@ -91,9 +106,9 @@ while running:
     mouse_x //= CELL_SIZE
     mouse_y //= CELL_SIZE
 
-    grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
-    grid_image_forest = pg.image.load("../Simcity/image/forest.png")
-    grid_image_water = pg.image.load("../Simcity/image/Water.png")
+    grid_image_ground = pg.image.load("../image/Ground.png")
+    grid_image_forest = pg.image.load("../image/forest.png")
+    grid_image_water = pg.image.load("../image/Water.png")
 
     for field in fields:
         x = field["x"]

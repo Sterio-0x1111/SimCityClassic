@@ -50,7 +50,6 @@ class MainMenuScene(Scene):
         if self.button_play.push():
             self.running = False
             game_scene = GameScene(self.game)
-            pg.time.delay(500)
             super().handle_events()
             game_scene.run()
 
@@ -192,7 +191,7 @@ class GameScene(Scene):
         self.window_width = 1400
         self.window_height = 850
 
-        self.GRID_SIZE = 100
+        self.GRID_SIZE = 200
         self.CELL_SIZE = 30
 
         # WINDOW_WIDTH = 1200
@@ -206,7 +205,7 @@ class GameScene(Scene):
         self.window = pg.display.set_mode((self.window_width, self.window_height))
 
         # Transparente Surface für das Raster
-        self.grid_surface = pg.Surface((self.GRID_SIZE * self.CELL_SIZE, self.GRID_SIZE * self.CELL_SIZE), pg.RESIZABLE)
+        self.grid_surface = pg.Surface((self.GRID_SIZE * self.CELL_SIZE, self.GRID_SIZE * self.CELL_SIZE))
         self.grid_surface.fill(self.BLACK)
 
         # Felder initialisieren
@@ -218,19 +217,23 @@ class GameScene(Scene):
             print("Error")
             exit()
 
-        self.scroll_x = 0
-        self.scroll_y = 0
+        self.scroll_x = 150
+        self.scroll_y = 100
 
         self.drawing = False
         self.start_pos = None
         self.end_pos = None
 
-        self.key_pressed = False
-        self.o = True
+        self.key_pressed = pg.key.get_pressed()
+        self.o = False
         self.p = False
         self.l = False
 
         self.top_menu = pg.image.load("./image/Topmenu.png")
+        self.top = pg.image.load("./image/Top.png")
+        self.left_menu = pg.image.load("./image/Leftmenu.png")
+        self.leftbelow = pg.image.load("./image/Leftbelow.png")
+        self.bottom = pg.image.load("./image/Bottom.png")
 
         self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
         self.grid_image_forest = pg.image.load("../Simcity/image/forest.png")
@@ -244,9 +247,10 @@ class GameScene(Scene):
                 # Speichern der Felder in JSON-Datei
                 try:
                     with open("./map/Field.json", "w") as json_file:
-                        json.dump(self.fields, json_file)
+                       json.dump(self.fields, json_file)
                 except FileNotFoundError:
-                    self.running = False
+                    print("Error")
+                    exit()
 
             if event.type == pg.KEYDOWN:
                 self.key_pressed = pg.key.get_pressed()
@@ -256,7 +260,7 @@ class GameScene(Scene):
                 self.start_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
                 self.end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
             elif event.type == pg.MOUSEMOTION and self.drawing:
-                end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
+                self.end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
             elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
                 self.drawing = False
                 for y in range(min(self.start_pos[1] // self.CELL_SIZE, self.end_pos[1] // self.CELL_SIZE),
@@ -282,16 +286,20 @@ class GameScene(Scene):
                                 self.l = True
 
     def update(self):
-        super().handle_events()
         keys = pg.key.get_pressed()
         if keys[pg.K_w]:
-            self.scroll_y += self.CELL_SIZE
+            if self.scroll_y < 100:
+                self.scroll_y += self.CELL_SIZE
         if keys[pg.K_s]:
-            self.scroll_y -= self.CELL_SIZE
+            # Scroll-Grenzen (dynamisch)
+            if self.scroll_y > (-1 * (self.GRID_SIZE * self.CELL_SIZE) + self.window_height) + 40:
+                self.scroll_y -= self.CELL_SIZE
         if keys[pg.K_a]:
-            self.scroll_x += self.CELL_SIZE
+            if self.scroll_x < 150:
+                self.scroll_x += self.CELL_SIZE
         if keys[pg.K_d]:
-            self.scroll_x -= self.CELL_SIZE
+            if self.scroll_x > (-1 * (self.GRID_SIZE * self.CELL_SIZE) + self.window_width) + 40:
+                self.scroll_x -= self.CELL_SIZE
 
         # Mausposition abfragen
         self.mouse_x, self.mouse_y = pg.mouse.get_pos()
@@ -301,8 +309,6 @@ class GameScene(Scene):
         self.mouse_y //= self.CELL_SIZE
 
     def draw(self):
-        self.screen.blit(self.top_menu, (0, 0))
-
         for field in self.fields:
             x = field["x"]
             y = field["y"]
@@ -317,14 +323,22 @@ class GameScene(Scene):
             if not state in range(0, 4):
                 pg.draw.rect(self.grid_surface, self.BLACK, (x, y, self.CELL_SIZE, self.CELL_SIZE))
 
-            # Zeichne blauen Rahmen um das Feld, über das der Mauszeiger schwebt
-            if 0 <= self.mouse_x < self.GRID_SIZE and 0 <= self.mouse_y < self.GRID_SIZE:
-                pg.draw.rect(self.grid_surface, self.BLUE, (self.mouse_x * self.CELL_SIZE, self.mouse_y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE), 2)
+        # Zeichne blauen Rahmen um das Feld, über das der Mauszeiger schwebt
+        if 0 <= self.mouse_x < self.GRID_SIZE and 0 <= self.mouse_y < self.GRID_SIZE:
+            pg.draw.rect(self.grid_surface, self.BLUE, (self.mouse_x * self.CELL_SIZE, self.mouse_y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE), 2)
 
         self.window.fill(self.BLACK)
+        print(self.scroll_x, self.scroll_y)
         self.window.blit(self.grid_surface, (self.scroll_x, self.scroll_y))
 
+        self.screen.blit(self.top_menu, (0, 0))
+        self.screen.blit(self.top, (0, 50))
+        self.screen.blit(self.left_menu, (0, 100))
+        self.screen.blit(self.leftbelow, (0, 700))
+        self.screen.blit(self.bottom, (150, 795))
+
         if self.drawing and self.start_pos and self.end_pos:
+            print(self.start_pos, self.end_pos)
             rect_x = min(self.start_pos[0], self.end_pos[0]) + self.scroll_x
             rect_y = min(self.start_pos[1], self.end_pos[1]) + self.scroll_y
             rect_width = abs(self.end_pos[0] - self.start_pos[0])
