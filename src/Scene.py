@@ -136,6 +136,12 @@ class SettingsScene(Scene):
                     if event.unicode:  # Ignoriert Tasten ohne Unicode
                         user_input = event.unicode
                         input_complete = True
+
+                    if input_complete:
+                        for control_name, key in self.controls[1]["manually"].items():
+                            if key == user_input:
+                                input_complete = False
+
         return user_input
 
     def update_control(self, control_name, new_key):
@@ -287,17 +293,22 @@ class GameScene(Scene):
 
     def update(self):
         keys = pg.key.get_pressed()
-        if keys[pg.K_w]:
+        move_up_key = ord(self.controls[1]["manually"]["map_move_up"])
+        move_down_key = ord(self.controls[1]["manually"]["map_move_down"])
+        move_left_key = ord(self.controls[1]["manually"]["map_move_left"])
+        move_right_key = ord(self.controls[1]["manually"]["map_move_right"])
+
+        if keys[move_up_key]:
             if self.scroll_y < 100:
                 self.scroll_y += self.CELL_SIZE
-        if keys[pg.K_s]:
+        if keys[move_down_key]:
             # Scroll-Grenzen (dynamisch)
             if self.scroll_y > (-1 * (self.GRID_SIZE * self.CELL_SIZE) + self.window_height) + 40:
                 self.scroll_y -= self.CELL_SIZE
-        if keys[pg.K_a]:
+        if keys[move_left_key]:
             if self.scroll_x < 150:
                 self.scroll_x += self.CELL_SIZE
-        if keys[pg.K_d]:
+        if keys[move_right_key]:
             if self.scroll_x > (-1 * (self.GRID_SIZE * self.CELL_SIZE) + self.window_width) + 40:
                 self.scroll_x -= self.CELL_SIZE
 
