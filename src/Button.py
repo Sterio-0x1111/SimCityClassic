@@ -17,7 +17,7 @@ class Button:
         pos = pg.mouse.get_pos()
 
         if self.rect.collidepoint(pos):
-            if (pg.mouse.get_pressed()[0] == 1) and (self.clicked is False):
+            if pg.mouse.get_pressed()[0] == 1:
                 action = True
                 self.clicked = True
                 pg.time.delay(200) # Intervall von 0.2 Sekunde, da sofortiger Übergang

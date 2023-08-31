@@ -112,8 +112,8 @@ class SettingsScene(Scene):
             self.update(True)
 
         if self.button_up.push():
-            new_key = self.get_user_input()  # Benutzereingabe erfassen
-            self.update_control("map_move_up", new_key)  # Tastenzuordnung aktualisieren
+            new_key = self.get_user_input()
+            self.update_control("map_move_up", new_key)
 
         if self.button_down.push():
             new_key = self.get_user_input()
@@ -201,9 +201,6 @@ class GameScene(Scene):
         self.GRID_SIZE = 200
         self.CELL_SIZE = 30
 
-        # WINDOW_WIDTH = 1200
-        # WINDOW_HEIGHT = 700
-
         self.BLACK = (0, 0, 0)
         self.RED = (255, 0, 0)
         self.BLUE = (0, 0, 255)
@@ -229,6 +226,7 @@ class GameScene(Scene):
         self.scroll_y = 100
 
         self.drawing = False
+        self.select_button = False
         self.selected_building_type = None
         self.start_pos = None
         self.end_pos = None
@@ -247,84 +245,98 @@ class GameScene(Scene):
         self.building_info = {
             "demolition": {
                 "button": Button.Button(self.game.window, 4, 115, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 115],
                 "state": 17,
                 "cost": 1,
                 "text": self.font.render("Demolition: 1€", True, self.BLUE)
             },
             "power_lines": {
                 "button": Button.Button(self.game.window, 4, 198, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 198],
                 "state": 4,
                 "cost": 5,
                 "text": self.font.render("Power lines: 5€", True, self.BLUE)
             },
             "park": {
                 "button": Button.Button(self.game.window, 4, 281, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 281],
                 "state": 5,
                 "cost": 50,
                 "text": self.font.render("Park: 50€", True, self.BLUE)
             },
             "commercial": {
                 "button": Button.Button(self.game.window, 4, 363, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 363],
                 "state": 6,
                 "cost": 150,
                 "text": self.font.render("Commercial: 150€", True, self.BLUE)
             },
             "police_station": {
                 "button": Button.Button(self.game.window, 4, 445, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 445],
                 "state": 7,
                 "cost": 500,
                 "text": self.font.render("Police station: 500€", True, self.BLUE)
             },
             "stadium": {
                 "button": Button.Button(self.game.window, 4, 527, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 527],
                 "state": 8,
                 "cost": 2000,
                 "text": self.font.render("Stadium: 2000€", True, self.BLUE)
             },
             "ship_port": {
                 "button": Button.Button(self.game.window, 4, 610, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [4, 610],
                 "state": 9,
                 "cost": 3000,
                 "text": self.font.render("Ship port: 3000€", True, self.BLUE)
             },
             "road": {
                 "button": Button.Button(self.game.window, 76, 115, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 115],
                 "state": 10,
                 "cost": 10,
                 "text": self.font.render("Road: 10€", True, self.BLUE)
             },
             "railroad": {
                 "button": Button.Button(self.game.window, 76, 198, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 198],
                 "state": 11,
                 "cost": 15,
                 "text": self.font.render("Railroad: 15€", True, self.BLUE)
             },
             "residential": {
                 "button": Button.Button(self.game.window, 76, 281, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 281],
                 "state": 12,
                 "cost": 100,
                 "text": self.font.render("Residential: 100€", True, self.BLUE)
             },
             "industrial": {
                 "button": Button.Button(self.game.window, 76, 363, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 363],
                 "state": 13,
                 "cost": 200,
                 "text": self.font.render("Industrial: 200€", True, self.BLUE)
             },
             "fire_station": {
                 "button": Button.Button(self.game.window, 76, 445, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 445],
                 "state": 14,
                 "cost": 500,
                 "text": self.font.render("Fire station: 500€", True, self.BLUE)
             },
             "power_plant": {
                 "button": Button.Button(self.game.window, 76, 527, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 527],
                 "state": 15,
                 "cost": 5000,
                 "text": self.font.render("Power plant: 5000€", True, self.BLUE)
             },
             "airport": {
                 "button": Button.Button(self.game.window, 76, 610, pg.image.load("./image/Dummy.png"), 1.0),
+                "button_xy": [76, 610],
                 "state": 16,
                 "cost": 3000,
                 "text": self.font.render("Airport: 3000€", True, self.BLUE)
@@ -352,11 +364,15 @@ class GameScene(Scene):
                 self.key_pressed = pg.key.get_pressed()
 
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
-
                 for building_type, info in self.building_info.items():
                     if info["button"].push():
-                        self.selected_building_type = info["state"]
-
+                        if self.select_button and self.selected_building_type == info["state"]:
+                            # Deaktiviere die Auswahl
+                            self.select_button = False
+                        else:
+                            # Aktiviere die Auswahl
+                            self.select_button = True
+                            self.selected_building_type = info["state"]
 
                 self.drawing = True
                 self.start_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
@@ -371,13 +387,13 @@ class GameScene(Scene):
                                    max(self.start_pos[0] // self.CELL_SIZE, self.end_pos[0] // self.CELL_SIZE) + 1):
                         if 0 <= x < self.GRID_SIZE and 0 <= y < self.GRID_SIZE:
                             idx = y * self.GRID_SIZE + x
-                            if self.selected_building_type:
-                                self.fields[idx]["state"] = self.selected_building_type
-                            if self.key_pressed[pg.K_o]:
-                                self.fields[idx]["state"] = 1
-                            if self.key_pressed[pg.K_p]:
+                            if self.select_button:
+                                if self.selected_building_type:
+                                    self.fields[idx]["state"] = self.selected_building_type
+                            # In der Vollversion nicht mehr enthalten
+                            if self.key_pressed[pg.K_n]:
                                 self.fields[idx]["state"] = 2
-                            if self.key_pressed[pg.K_l]:
+                            if self.key_pressed[pg.K_m]:
                                 self.fields[idx]["state"] = 3
 
     def update(self):
@@ -454,8 +470,6 @@ class GameScene(Scene):
             pg.draw.rect(self.grid_surface, self.BLUE, (self.mouse_x * self.CELL_SIZE, self.mouse_y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE), 2)
 
         self.window.fill(self.BLACK)
-        print(self.scroll_x, self.scroll_y)
-
         self.window.blit(self.grid_surface, (self.scroll_x, self.scroll_y))
 
         self.screen.blit(self.bottom, (150, 795))
@@ -463,9 +477,11 @@ class GameScene(Scene):
         # Button
         for building_type, info in self.building_info.items():
             button = info["button"]
-            text = info["text"]
+            if self.select_button:
+                if self.selected_building_type == info["state"]:
+                    text = info["text"]
+                    self.screen.blit(text, (155, 800))
             button.draw()
-            self.screen.blit(text, (155, 800))
 
         self.screen.blit(self.top_menu, (0, 0))
         self.screen.blit(self.top, (0, 50))
@@ -473,9 +489,13 @@ class GameScene(Scene):
         self.screen.blit(self.leftbelow, (0, 700))
 
         if self.drawing and self.start_pos and self.end_pos:
-            print(self.start_pos, self.end_pos)
             rect_x = min(self.start_pos[0], self.end_pos[0]) + self.scroll_x
             rect_y = min(self.start_pos[1], self.end_pos[1]) + self.scroll_y
             rect_width = abs(self.end_pos[0] - self.start_pos[0])
             rect_height = abs(self.end_pos[1] - self.start_pos[1])
             pg.draw.rect(self.window, self.YELLOW, (rect_x, rect_y, rect_width, rect_height), 3)
+
+        if self.select_button:
+            for building_type, info in self.building_info.items():
+                if self.selected_building_type == info["state"]:
+                    pg.draw.rect(self.window, self.YELLOW, (info["button_xy"][0], info["button_xy"][1], 68, 78), 3)
