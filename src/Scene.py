@@ -245,6 +245,12 @@ class GameScene(Scene):
         self.font = pg.font.SysFont(None, 33)
 
         self.building_info = {
+            "demolition": {
+                "button": Button.Button(self.game.window, 4, 115, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 17,
+                "cost": 1,
+                "text": self.font.render("Demolition: 1€", True, self.BLUE)
+            },
             "power_lines": {
                 "button": Button.Button(self.game.window, 4, 198, pg.image.load("./image/Dummy.png"), 1.0),
                 "state": 4,
@@ -325,10 +331,6 @@ class GameScene(Scene):
             }
         }
 
-        self.demolition = pg.image.load("./image/Dummy.png")
-        self.demolition = Button.Button(self.game.window, 4, 115, self.demolition, 1.0)
-        self.demolition_text = self.font.render("Demolition: 1€", True, self.BLUE)
-
         self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
         self.grid_image_forest = pg.image.load("../Simcity/image/forest.png")
         self.grid_image_water = pg.image.load("../Simcity/image/Water.png")
@@ -408,7 +410,7 @@ class GameScene(Scene):
 
     def draw(self):
         building_classes = {
-            0: Demolition,
+            17: Demolition,
             1: "GroundBuilding",
             2: "ForestBuilding",
             3: "WaterBuilding",
