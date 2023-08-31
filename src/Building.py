@@ -23,7 +23,7 @@ class Building:
 class Demolition(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
+        self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png").convert()
 
     def handle_events(self):
         pass
@@ -38,7 +38,7 @@ class Demolition(Building):
 class PowerLines(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.power_lines = pg.image.load("./image/Building/1.png")
+        self.power_lines = pg.image.load("./image/Building/1.png").convert()
 
     def handle_events(self):
         pass
@@ -53,7 +53,7 @@ class PowerLines(Building):
 class Park(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.park = pg.image.load("./image/Building/2.png")
+        self.park = pg.image.load("./image/Building/2.png").convert()
 
     def handle_events(self):
         pass
@@ -68,7 +68,7 @@ class Park(Building):
 class Commercial(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.commercial = pg.image.load("./image/Building/3.png")
+        self.commercial = pg.image.load("./image/Building/3.png").convert()
 
     def handle_events(self):
         pass
@@ -83,7 +83,7 @@ class Commercial(Building):
 class PoliceStation(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.police_station = pg.image.load("./image/Building/4.png")
+        self.police_station = pg.image.load("./image/Building/4.png").convert()
 
     def handle_events(self):
         pass
@@ -98,7 +98,7 @@ class PoliceStation(Building):
 class Stadium(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.stadium = pg.image.load("./image/Building/5.png")
+        self.stadium = pg.image.load("./image/Building/5.png").convert()
 
     def handle_events(self):
         pass
@@ -113,7 +113,7 @@ class Stadium(Building):
 class ShipPort(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.ship_port = pg.image.load("./image/Building/6.png")
+        self.ship_port = pg.image.load("./image/Building/6.png").convert()
 
     def handle_events(self):
         pass
@@ -128,7 +128,7 @@ class ShipPort(Building):
 class Road(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.road = pg.image.load("./image/Building/7.png")
+        self.road = pg.image.load("./image/Building/7.png").convert()
 
     def handle_events(self):
         pass
@@ -143,7 +143,7 @@ class Road(Building):
 class Railroad(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.railroad = pg.image.load("./image/Building/8.png")
+        self.railroad = pg.image.load("./image/Building/8.png").convert()
 
     def handle_events(self):
         pass
@@ -158,7 +158,7 @@ class Railroad(Building):
 class Residential(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.residential = pg.image.load("./image/Building/9.png")
+        self.residential = pg.image.load("./image/Building/9.png").convert()
 
     def handle_events(self):
         pass
@@ -173,7 +173,7 @@ class Residential(Building):
 class Industrial(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.industrial = pg.image.load("./image/Building/10.png")
+        self.industrial = pg.image.load("./image/Building/10.png").convert()
 
     def handle_events(self):
         pass
@@ -188,7 +188,7 @@ class Industrial(Building):
 class FireStation(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.fire_station = pg.image.load("./image/Building/11.png")
+        self.fire_station = pg.image.load("./image/Building/11.png").convert()
 
     def handle_events(self):
         pass
@@ -203,7 +203,7 @@ class FireStation(Building):
 class PowerPlant(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.power_plant = pg.image.load("./image/Building/12.png")
+        self.power_plant = pg.image.load("./image/Building/12.png").convert()
 
     def handle_events(self):
         pass
@@ -218,7 +218,7 @@ class PowerPlant(Building):
 class Airport(Building):
     def __init__(self, game_scene, state, x, y):
         super().__init__(game_scene, state, x, y)
-        self.airport = pg.image.load("./image/Building/13.png")
+        self.airport = pg.image.load("./image/Building/13.png").convert()
 
     def handle_events(self):
         pass

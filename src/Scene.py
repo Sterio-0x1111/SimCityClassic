@@ -1,7 +1,10 @@
 import pygame as pg
 import json
 import Button
+import FileSelection
 from Building import *
+from BuildMode import *
+from Budget import *
 
 
 class Scene:
@@ -50,13 +53,20 @@ class MainMenuScene(Scene):
         super().handle_events()
         if self.button_play.push():
             self.running = False
-            game_scene = GameScene(self.game)
+            game_scene = GameScene(self.game, "./map/Field.json")
             super().handle_events()
             game_scene.run()
 
         elif self.button_load.push():
             self.running = False
-            # folgt
+            file_selection = FileSelection.FileSelection()
+            selected_file_path = file_selection.select_json_file()
+            if selected_file_path:
+                game_scene = GameScene(self.game, selected_file_path)
+                super().handle_events()
+                game_scene.run()
+            else:
+                pass
 
         elif self.button_Settings.push():
             self.running = False
@@ -193,7 +203,7 @@ Traceback (most recent call last):
     class GameScene(Scene):
 '''
 class GameScene(Scene):
-    def __init__(self, game):
+    def __init__(self, game, game_path):
         super().__init__(game)
         self.window_width = 1400
         self.window_height = 850
@@ -214,7 +224,7 @@ class GameScene(Scene):
 
         # Felder initialisieren
         try:
-            with open("./map/Field.json", "r") as json_file:
+            with open(game_path, "r") as json_file:
                 self.fields = json.load(json_file)
         except FileNotFoundError:
             # self.fields = [{"state": 0, "x": x * self.CELL_SIZE, "y": y * self.CELL_SIZE}
@@ -228,8 +238,11 @@ class GameScene(Scene):
         self.drawing = False
         self.select_button = False
         self.selected_building_type = None
-        self.start_pos = None
-        self.end_pos = None
+        self.start_pos = (0, 0)
+        self.end_pos = (0, 0)
+
+        self.mouse_x = None
+        self.mouse_y = None
 
         self.key_pressed = pg.key.get_pressed()
 
@@ -445,6 +458,8 @@ class GameScene(Scene):
             17: Demolition,
         }
 
+        # Es wäre sinnvoll, den sichtbaren Bereich zu verwenden, aber der
+        # Algorithmus dafür ist mir momentan nicht klar.
         for field in self.fields:
             x = field["x"]
             y = field["y"]
@@ -467,7 +482,8 @@ class GameScene(Scene):
 
         # Zeichne blauen Rahmen um das Feld, über das der Mauszeiger schwebt
         if 0 <= self.mouse_x < self.GRID_SIZE and 0 <= self.mouse_y < self.GRID_SIZE:
-            pg.draw.rect(self.grid_surface, self.BLUE, (self.mouse_x * self.CELL_SIZE, self.mouse_y * self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE), 2)
+            pg.draw.rect(self.grid_surface, self.BLUE, (self.mouse_x * self.CELL_SIZE, self.mouse_y *
+                         self.CELL_SIZE, self.CELL_SIZE, self.CELL_SIZE), 2)
 
         self.window.fill(self.BLACK)
         self.window.blit(self.grid_surface, (self.scroll_x, self.scroll_y))
