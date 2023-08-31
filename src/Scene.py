@@ -1,6 +1,7 @@
 import pygame as pg
 import json
 import Button
+from Building import *
 
 
 class Scene:
@@ -219,7 +220,8 @@ class GameScene(Scene):
             with open("./map/Field.json", "r") as json_file:
                 self.fields = json.load(json_file)
         except FileNotFoundError:
-            # self.fields = [{"state": 0, "x": x * self.CELL_SIZE, "y": y * self.CELL_SIZE} for y in range(self.GRID_SIZE) for x in range(self.GRID_SIZE)]
+            # self.fields = [{"state": 0, "x": x * self.CELL_SIZE, "y": y * self.CELL_SIZE}
+            # for y in range(self.GRID_SIZE) for x in range(self.GRID_SIZE)]
             print("Error")
             exit()
 
@@ -227,13 +229,11 @@ class GameScene(Scene):
         self.scroll_y = 100
 
         self.drawing = False
+        self.selected_building_type = None
         self.start_pos = None
         self.end_pos = None
 
         self.key_pressed = pg.key.get_pressed()
-        self.o = False
-        self.p = False
-        self.l = False
 
         self.top_menu = pg.image.load("./image/Topmenu.png")
         self.top = pg.image.load("./image/Top.png")
@@ -244,61 +244,90 @@ class GameScene(Scene):
         # Button
         self.font = pg.font.SysFont(None, 33)
 
+        self.building_info = {
+            "power_lines": {
+                "button": Button.Button(self.game.window, 4, 198, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 4,
+                "cost": 5,
+                "text": self.font.render("Power lines: 5€", True, self.BLUE)
+            },
+            "park": {
+                "button": Button.Button(self.game.window, 4, 281, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 5,
+                "cost": 50,
+                "text": self.font.render("Park: 50€", True, self.BLUE)
+            },
+            "commercial": {
+                "button": Button.Button(self.game.window, 4, 363, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 6,
+                "cost": 150,
+                "text": self.font.render("Commercial: 150€", True, self.BLUE)
+            },
+            "police_station": {
+                "button": Button.Button(self.game.window, 4, 445, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 7,
+                "cost": 500,
+                "text": self.font.render("Police station: 500€", True, self.BLUE)
+            },
+            "stadium": {
+                "button": Button.Button(self.game.window, 4, 527, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 8,
+                "cost": 2000,
+                "text": self.font.render("Stadium: 2000€", True, self.BLUE)
+            },
+            "ship_port": {
+                "button": Button.Button(self.game.window, 4, 610, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 9,
+                "cost": 3000,
+                "text": self.font.render("Ship port: 3000€", True, self.BLUE)
+            },
+            "road": {
+                "button": Button.Button(self.game.window, 76, 115, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 10,
+                "cost": 10,
+                "text": self.font.render("Road: 10€", True, self.BLUE)
+            },
+            "railroad": {
+                "button": Button.Button(self.game.window, 76, 198, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 11,
+                "cost": 15,
+                "text": self.font.render("Railroad: 15€", True, self.BLUE)
+            },
+            "residential": {
+                "button": Button.Button(self.game.window, 76, 281, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 12,
+                "cost": 100,
+                "text": self.font.render("Residential: 100€", True, self.BLUE)
+            },
+            "industrial": {
+                "button": Button.Button(self.game.window, 76, 363, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 13,
+                "cost": 200,
+                "text": self.font.render("Industrial: 200€", True, self.BLUE)
+            },
+            "fire_station": {
+                "button": Button.Button(self.game.window, 76, 445, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 14,
+                "cost": 500,
+                "text": self.font.render("Fire station: 500€", True, self.BLUE)
+            },
+            "power_plant": {
+                "button": Button.Button(self.game.window, 76, 527, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 15,
+                "cost": 5000,
+                "text": self.font.render("Power plant: 5000€", True, self.BLUE)
+            },
+            "airport": {
+                "button": Button.Button(self.game.window, 76, 610, pg.image.load("./image/Dummy.png"), 1.0),
+                "state": 16,
+                "cost": 3000,
+                "text": self.font.render("Airport: 3000€", True, self.BLUE)
+            }
+        }
+
         self.demolition = pg.image.load("./image/Dummy.png")
         self.demolition = Button.Button(self.game.window, 4, 115, self.demolition, 1.0)
         self.demolition_text = self.font.render("Demolition: 1€", True, self.BLUE)
-
-        self.power_lines = pg.image.load("./image/Dummy.png")
-        self.power_lines = Button.Button(self.game.window, 4, 198, self.power_lines, 1.0)
-        self.power_lines_text = self.font.render("Power lines: 5€", True, self.BLUE)
-
-        self.park = pg.image.load("./image/Dummy.png")
-        self.park = Button.Button(self.game.window, 4, 281, self.park, 1.0)
-        self.park_text = self.font.render("Park: 50€", True, self.BLUE)
-
-        self.commercial = pg.image.load("./image/Dummy.png")
-        self.commercial = Button.Button(self.game.window, 4, 363, self.commercial, 1.0)
-        self.commercial_text = self.font.render("Commercial: 150€", True, self.BLUE)
-
-        self.police_station = pg.image.load("./image/Dummy.png")
-        self.police_station = Button.Button(self.game.window, 4, 445, self.police_station, 1.0)
-        self.police_station_text = self.font.render("Police station: 500€", True, self.BLUE)
-
-        self.stadium = pg.image.load("./image/Dummy.png")
-        self.stadium = Button.Button(self.game.window, 4, 527, self.stadium, 1.0)
-        self.stadium_text = self.font.render("Stadium: 2000€", True, self.BLUE)
-
-        self.ship_port = pg.image.load("./image/Dummy.png")
-        self.ship_port = Button.Button(self.game.window, 4, 610, self.ship_port, 1.0)
-        self.ship_port_text = self.font.render("Ship port: 3000€", True, self.BLUE)
-
-        self.road = pg.image.load("./image/Dummy.png")
-        self.road = Button.Button(self.game.window, 76, 115, self.road, 1.0)
-        self.road_text = self.font.render("Road: 10€", True, self.BLUE)
-
-        self.railroad = pg.image.load("./image/Dummy.png")
-        self.railroad = Button.Button(self.game.window, 76, 198, self.railroad, 1.0)
-        self.railroad_text = self.font.render("Railroad: 15€", True, self.BLUE)
-
-        self.residential = pg.image.load("./image/Dummy.png")
-        self.residential = Button.Button(self.game.window, 76, 281, self.residential, 1.0)
-        self.residential_text = self.font.render("Residential: 100€", True, self.BLUE)
-
-        self.industrial = pg.image.load("./image/Dummy.png")
-        self.industrial = Button.Button(self.game.window, 76, 363, self.industrial, 1.0)
-        self.industrial_text = self.font.render("Industrial: 200€", True, self.BLUE)
-
-        self.fire_station = pg.image.load("./image/Dummy.png")
-        self.fire_station = Button.Button(self.game.window, 76, 445, self.fire_station, 1.0)
-        self.fire_station_text = self.font.render("Fire station: 500€", True, self.BLUE)
-
-        self.power_plant = pg.image.load("./image/Dummy.png")
-        self.power_plant = Button.Button(self.game.window, 76, 527, self.power_plant, 1.0)
-        self.power_plant_text = self.font.render("Power plant: 5000€", True, self.BLUE)
-
-        self.airport = pg.image.load("./image/Dummy.png")
-        self.airport = Button.Button(self.game.window, 76, 610, self.airport, 1.0)
-        self.airport_text = self.font.render("Airport: 3000€", True, self.BLUE)
 
         self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
         self.grid_image_forest = pg.image.load("../Simcity/image/forest.png")
@@ -312,7 +341,7 @@ class GameScene(Scene):
                 # Speichern der Felder in JSON-Datei
                 try:
                     with open("./map/Field.json", "w") as json_file:
-                       json.dump(self.fields, json_file)
+                        json.dump(self.fields, json_file)
                 except FileNotFoundError:
                     print("Error")
                     exit()
@@ -321,6 +350,12 @@ class GameScene(Scene):
                 self.key_pressed = pg.key.get_pressed()
 
             if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
+
+                for building_type, info in self.building_info.items():
+                    if info["button"].push():
+                        self.selected_building_type = info["state"]
+
+
                 self.drawing = True
                 self.start_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
                 self.end_pos = (event.pos[0] - self.scroll_x, event.pos[1] - self.scroll_y)
@@ -334,21 +369,14 @@ class GameScene(Scene):
                                    max(self.start_pos[0] // self.CELL_SIZE, self.end_pos[0] // self.CELL_SIZE) + 1):
                         if 0 <= x < self.GRID_SIZE and 0 <= y < self.GRID_SIZE:
                             idx = y * self.GRID_SIZE + x
-                            if self.key_pressed[pg.K_o] or self.o:
+                            if self.selected_building_type:
+                                self.fields[idx]["state"] = self.selected_building_type
+                            if self.key_pressed[pg.K_o]:
                                 self.fields[idx]["state"] = 1
-                                self.o = True
-                                self.p = False
-                                self.l = False
-                            if self.key_pressed[pg.K_p] or self.p:
+                            if self.key_pressed[pg.K_p]:
                                 self.fields[idx]["state"] = 2
-                                self.o = False
-                                self.p = True
-                                self.l = False
-                            if self.key_pressed[pg.K_l] or self.l:
+                            if self.key_pressed[pg.K_l]:
                                 self.fields[idx]["state"] = 3
-                                self.o = False
-                                self.p = False
-                                self.l = True
 
     def update(self):
         keys = pg.key.get_pressed()
@@ -379,19 +407,45 @@ class GameScene(Scene):
         self.mouse_y //= self.CELL_SIZE
 
     def draw(self):
+        building_classes = {
+            0: Demolition,
+            1: "GroundBuilding",
+            2: "ForestBuilding",
+            3: "WaterBuilding",
+            4: PowerLines,
+            5: Park,
+            6: Commercial,
+            7: PoliceStation,
+            8: Stadium,
+            9: ShipPort,
+            10: Road,
+            11: Railroad,
+            12: Residential,
+            13: Industrial,
+            14: FireStation,
+            15: PowerPlant,
+            16: Airport,
+        }
+
         for field in self.fields:
             x = field["x"]
             y = field["y"]
             state = field["state"]
 
-            if state:
+            building_class = building_classes.get(state)
+
+            if state not in (1, 2, 3):
+                if building_class:
+                    dummy = building_class(self.game, state, y, x)
+                    dummy.draw(self.grid_surface)
+            elif state == 1:
                 self.grid_surface.blit(self.grid_image_ground, (x, y))
-            if state == 2:
+            elif state == 2:
                 self.grid_surface.blit(self.grid_image_forest, (x, y))
-            if state == 3:
+            elif state == 3:
                 self.grid_surface.blit(self.grid_image_water, (x, y))
-            if not state in range(0, 4):
-                pg.draw.rect(self.grid_surface, self.BLACK, (x, y, self.CELL_SIZE, self.CELL_SIZE))
+            else:
+                exit()
 
         # Zeichne blauen Rahmen um das Feld, über das der Mauszeiger schwebt
         if 0 <= self.mouse_x < self.GRID_SIZE and 0 <= self.mouse_y < self.GRID_SIZE:
@@ -405,47 +459,11 @@ class GameScene(Scene):
         self.screen.blit(self.bottom, (150, 795))
 
         # Button
-        self.demolition.draw()
-        self.screen.blit(self.demolition_text, (155, 800))
-
-        self.power_lines.draw()
-        self.screen.blit(self.power_lines_text, (155, 800))
-
-        self.park.draw()
-        self.screen.blit(self.park_text, (155, 800))
-
-        self.commercial.draw()
-        self.screen.blit(self.commercial_text, (155, 800))
-
-        self.police_station.draw()
-        self.screen.blit(self.police_station_text, (155, 800))
-
-        self.stadium.draw()
-        self.screen.blit(self.stadium_text, (155, 800))
-
-        self.ship_port.draw()
-        self.screen.blit(self.ship_port_text, (155, 800))
-
-        self.road.draw()
-        self.screen.blit(self.road_text, (155, 800))
-
-        self.railroad.draw()
-        self.screen.blit(self.railroad_text, (155, 800))
-
-        self.residential.draw()
-        self.screen.blit(self.residential_text, (155, 800))
-
-        self.industrial.draw()
-        self.screen.blit(self.industrial_text, (155, 800))
-
-        self.fire_station.draw()
-        self.screen.blit(self.fire_station_text, (155, 800))
-
-        self.power_plant.draw()
-        self.screen.blit(self.power_plant_text, (155, 800))
-
-        self.airport.draw()
-        self.screen.blit(self.airport_text, (155, 800))
+        for building_type, info in self.building_info.items():
+            button = info["button"]
+            text = info["text"]
+            button.draw()
+            self.screen.blit(text, (155, 800))
 
         self.screen.blit(self.top_menu, (0, 0))
         self.screen.blit(self.top, (0, 50))
