@@ -410,7 +410,6 @@ class GameScene(Scene):
 
     def draw(self):
         building_classes = {
-            17: Demolition,
             1: "GroundBuilding",
             2: "ForestBuilding",
             3: "WaterBuilding",
@@ -427,6 +426,7 @@ class GameScene(Scene):
             14: FireStation,
             15: PowerPlant,
             16: Airport,
+            17: Demolition,
         }
 
         for field in self.fields:

@@ -4,8 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 1.0V">
+    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 1.0.1V">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/1.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/10.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/11.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/12.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/12.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/13.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/13.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/2.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/3.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/4.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/5.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/6.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/7.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/8.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Building/9.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Building/9.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/map/Field.json" beforeDir="false" afterPath="$PROJECT_DIR$/map/Field.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.py" afterDir="false" />
     </list>
@@ -211,7 +224,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693445956152</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Alpha 1.0.1V">
+      <option name="closed" value="true" />
+      <created>1693447141018</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1693447141018</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -250,6 +271,7 @@
     <MESSAGE value="Alpha 0.7V" />
     <MESSAGE value="Alpha 0.8V" />
     <MESSAGE value="Alpha 1.0V" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alpha 1.0V" />
+    <MESSAGE value="Alpha 1.0.1V" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alpha 1.0.1V" />
   </component>
 </project>
