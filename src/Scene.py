@@ -53,7 +53,7 @@ class MainMenuScene(Scene):
         super().handle_events()
         if self.button_play.push():
             self.running = False
-            game_scene = GameScene(self.game, "./map/Field.json")
+            game_scene = GameScene(self.game, "./map/Field.json", "./setting/Setting.json")
             super().handle_events()
             game_scene.run()
 
@@ -62,9 +62,13 @@ class MainMenuScene(Scene):
             file_selection = FileSelection.FileSelection()
             selected_file_path = file_selection.select_json_file()
             if selected_file_path:
-                game_scene = GameScene(self.game, selected_file_path)
-                super().handle_events()
-                game_scene.run()
+                selected_file_path_setting = file_selection.select_json_file()
+                if selected_file_path_setting:
+                    game_scene = GameScene(self.game, selected_file_path, selected_file_path_setting)
+                    super().handle_events()
+                    game_scene.run()
+                else:
+                    pass
             else:
                 pass
 
@@ -203,8 +207,11 @@ Traceback (most recent call last):
     class GameScene(Scene):
 '''
 class GameScene(Scene):
-    def __init__(self, game, game_path):
+    def __init__(self, game, game_path_map, game_path_setting):
         super().__init__(game)
+        self.game_path_map = game_path_map
+        self.game_path_setting = game_path_setting
+
         self.window_width = 1400
         self.window_height = 850
 
@@ -224,8 +231,10 @@ class GameScene(Scene):
 
         # Felder initialisieren
         try:
-            with open(game_path, "r") as json_file:
+            with open(self.game_path_map, "r") as json_file:
                 self.fields = json.load(json_file)
+            with open(self.game_path_setting, "r") as json_file:
+                self.setting = json.load(json_file)
         except FileNotFoundError:
             # self.fields = [{"state": 0, "x": x * self.CELL_SIZE, "y": y * self.CELL_SIZE}
             # for y in range(self.GRID_SIZE) for x in range(self.GRID_SIZE)]
@@ -356,6 +365,9 @@ class GameScene(Scene):
             }
         }
 
+        self.budget = Budget(self.screen, self.building_info, self.setting[0]["Budget"])
+        self.time = BuildMode(self.screen, self.setting)
+
         self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png")
         self.grid_image_forest = pg.image.load("../Simcity/image/forest.png")
         self.grid_image_water = pg.image.load("../Simcity/image/Water.png")
@@ -367,8 +379,10 @@ class GameScene(Scene):
 
                 # Speichern der Felder in JSON-Datei
                 try:
-                    with open("./map/Field.json", "w") as json_file:
+                    with open(self.game_path_map, "w") as json_file:
                         json.dump(self.fields, json_file)
+                    with open(self.game_path_setting, "w") as json_file:
+                        json.dump(self.setting, json_file)
                 except FileNotFoundError:
                     print("Error")
                     exit()
@@ -402,7 +416,13 @@ class GameScene(Scene):
                             idx = y * self.GRID_SIZE + x
                             if self.select_button:
                                 if self.selected_building_type:
-                                    self.fields[idx]["state"] = self.selected_building_type
+                                    if self.fields[idx]["state"] != self.selected_building_type:
+                                        for i, info in self.building_info.items():
+                                            if info["state"] == self.selected_building_type:
+                                                if (self.budget.budget - info["cost"]) >= 0:
+                                                    self.fields[idx]["state"] = self.selected_building_type
+                                                    self.budget.update(info["cost"])
+
                             # In der Vollversion nicht mehr enthalten
                             if self.key_pressed[pg.K_n]:
                                 self.fields[idx]["state"] = 2
@@ -436,6 +456,8 @@ class GameScene(Scene):
         self.mouse_y -= self.scroll_y
         self.mouse_x //= self.CELL_SIZE
         self.mouse_y //= self.CELL_SIZE
+
+        self.time.update(self.budget)
 
     def draw(self):
         building_classes = {
@@ -515,3 +537,10 @@ class GameScene(Scene):
             for building_type, info in self.building_info.items():
                 if self.selected_building_type == info["state"]:
                     pg.draw.rect(self.window, self.YELLOW, (info["button_xy"][0], info["button_xy"][1], 68, 78), 3)
+
+        year, month, day = self.time.draw()
+        self.setting[0]["Time"]["y"] = year
+        self.setting[0]["Time"]["m"] = month
+        self.setting[0]["Time"]["d"] = day
+
+        self.setting[0]["Budget"] = self.budget.draw()
