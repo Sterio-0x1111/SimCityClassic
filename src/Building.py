@@ -23,7 +23,7 @@ class Building:
 class Demolition(Building):
     def __init__(self, game_scene, state):
         super().__init__(game_scene, state)
-        self.grid_image_ground = pg.image.load("../Simcity/image/Ground.png").convert()
+        self.grid_image_ground = pg.image.load("../image/Ground.png").convert()
 
     def handle_events(self):
         pass
@@ -38,7 +38,7 @@ class Demolition(Building):
 class PowerLines(Building):
     def __init__(self, game_scene, state):
         super().__init__(game_scene, state)
-        self.power_lines = pg.image.load("../Simcity/image/Building/1.png").convert()
+        self.power_lines = pg.image.load("../image/Building/1.png").convert()
 
     def handle_events(self):
         pass
@@ -53,7 +53,7 @@ class PowerLines(Building):
 class Park(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.park = pg.image.load("../Simcity/image/Building/2.png").convert()
+        self.park = pg.image.load("../image/Building/2.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -69,7 +69,7 @@ class Park(Building):
 class Commercial(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.commercial = pg.image.load("../Simcity/image/Building/3.png").convert()
+        self.commercial = pg.image.load("../image/Building/3.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -85,7 +85,7 @@ class Commercial(Building):
 class PoliceStation(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.police_station = pg.image.load("../Simcity/image/Building/4.png").convert()
+        self.police_station = pg.image.load("../image/Building/4.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -101,7 +101,7 @@ class PoliceStation(Building):
 class Stadium(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.stadium = pg.image.load("../Simcity/image/Building/5.png").convert()
+        self.stadium = pg.image.load("../image/Building/5.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -117,7 +117,7 @@ class Stadium(Building):
 class ShipPort(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.ship_port = pg.image.load("../Simcity/image/Building/6.png").convert()
+        self.ship_port = pg.image.load("../image/Building/6.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -133,7 +133,7 @@ class ShipPort(Building):
 class Road(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.road = pg.image.load("../Simcity/image/Building/7.png").convert()
+        self.road = pg.image.load("../image/Building/7.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -149,7 +149,7 @@ class Road(Building):
 class Railroad(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.railroad = pg.image.load("../Simcity/image/Building/8.png").convert()
+        self.railroad = pg.image.load("../image/Building/8.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -165,7 +165,7 @@ class Railroad(Building):
 class Residential(Building):
     def __init__(self, game_scene, state, count, population):
         super().__init__(game_scene, state)
-        self.residential = pg.image.load("../Simcity/image/Building/9.png").convert()
+        self.residential = pg.image.load("../image/Building/9.png").convert()
         self.count = count
         self.population = population
         self.max_population = 0
@@ -202,7 +202,7 @@ class Residential(Building):
 class Industrial(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.industrial = pg.image.load("../Simcity/image/Building/10.png").convert()
+        self.industrial = pg.image.load("../image/Building/10.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -218,7 +218,7 @@ class Industrial(Building):
 class FireStation(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.fire_station = pg.image.load("../Simcity/image/Building/11.png").convert()
+        self.fire_station = pg.image.load("../image/Building/11.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -234,7 +234,7 @@ class FireStation(Building):
 class PowerPlant(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.power_plant = pg.image.load("../Simcity/image/Building/12.png").convert()
+        self.power_plant = pg.image.load("../image/Building/12.png").convert()
         self.count = count
 
     def handle_events(self):
@@ -260,7 +260,7 @@ class PowerPlant(Building):
 class Airport(Building):
     def __init__(self, game_scene, state, count):
         super().__init__(game_scene, state)
-        self.airport = pg.image.load("../Simcity/image/Building/13.png").convert()
+        self.airport = pg.image.load("../image/Building/13.png").convert()
         self.count = count
 
     def handle_events(self):

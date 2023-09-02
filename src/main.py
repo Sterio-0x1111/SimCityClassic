@@ -12,7 +12,7 @@ class Game:
         self.window = pg.display.set_mode((self.window_width, self.window_height), pg.RESIZABLE)
         pg.display.set_caption("SimCity")
 
-        with open("./controls/controls.json", "r") as json_controls:
+        with open("../controls/controls.json", "r") as json_controls:
             self.controls = json.load(json_controls)
 
         self.scene = Scene.MainMenuScene(self)

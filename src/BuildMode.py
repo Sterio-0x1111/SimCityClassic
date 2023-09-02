@@ -1,9 +1,8 @@
 import pygame as pg
 import Button
-from Scene import *
 import datetime
+from Scene import *
 from dateutil.relativedelta import relativedelta
-
 
 class BuildMode:
     def __init__(self, game_screen, building_settings):
@@ -29,7 +28,7 @@ class BuildMode:
         self.current_time = pg.time.get_ticks()
 
         if (self.current_time - self.last_time) > self.next_event:
-            self.current_date += relativedelta(months=1)  # Monatlich hochzählen
+            self.current_date += relativedelta(months=+1)  # Monatlich hochzählen
             self.last_time = self.current_time
 
             self.population = building_info["residential"]["instance"].event()

@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 2V">
+    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 3.0V">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/Topmenu.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Topmenu.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setting/Setting.json" beforeDir="false" afterPath="$PROJECT_DIR$/setting/Setting.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BuildMode.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/BuildMode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Building.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Building.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Button.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +87,7 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -263,7 +262,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693666130444</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Alpha 3.0V">
+      <option name="closed" value="true" />
+      <created>1693677850902</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1693677850902</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -307,6 +314,7 @@
     <MESSAGE value="Alpha 1.2V" />
     <MESSAGE value="Alpha 1.3V" />
     <MESSAGE value="Alpha 2V" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alpha 2V" />
+    <MESSAGE value="Alpha 3.0V" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alpha 3.0V" />
   </component>
 </project>
