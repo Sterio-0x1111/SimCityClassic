@@ -239,9 +239,19 @@ class PowerPlant(Building):
 
     def handle_events(self):
         super().handle_events()
+        self.max_electricity = 0
+        self.current_electricity = 0
+
+    def event(self, building_info):
+        self.max_electricity = self.count * 1000
+        self.current_electricity = building_info["residential"]["instance"].population
+        self.current_electricity += (building_info["commercial"]["instance"].count * 5)
+        self.current_electricity += (building_info["industrial"]["instance"].count * 10)
+        return self.max_electricity, self.current_electricity
 
     def update(self):
         super().update()
+        self.max_electricity += 100
 
     def draw(self, grid_surface, x, y):
         grid_surface.blit(self.power_plant, (x, y))

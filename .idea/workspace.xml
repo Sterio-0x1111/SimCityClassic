@@ -4,16 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 1.3V">
+    <list default="true" id="284a5f3f-c614-43a1-a710-dd13eb62fbb4" name="Changes" comment="Alpha 2V">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/Bottom.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Bottom.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/image/Leftbelow.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Leftbelow.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map/Backup/Field_200.json" beforeDir="false" afterPath="$PROJECT_DIR$/map/Backup/Field_200.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/map/Field.json" beforeDir="false" afterPath="$PROJECT_DIR$/map/Field.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/image/Topmenu.png" beforeDir="false" afterPath="$PROJECT_DIR$/image/Topmenu.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/setting/Setting.json" beforeDir="false" afterPath="$PROJECT_DIR$/setting/Setting.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Budget.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Budget.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/BuildMode.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/BuildMode.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Building.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Building.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Button.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Button.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -258,7 +255,15 @@
       <option name="project" value="LOCAL" />
       <updated>1693535161149</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="Alpha 2V">
+      <option name="closed" value="true" />
+      <created>1693666130444</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1693666130444</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -301,6 +306,7 @@
     <MESSAGE value="Alpha 1.1V" />
     <MESSAGE value="Alpha 1.2V" />
     <MESSAGE value="Alpha 1.3V" />
-    <option name="LAST_COMMIT_MESSAGE" value="Alpha 1.3V" />
+    <MESSAGE value="Alpha 2V" />
+    <option name="LAST_COMMIT_MESSAGE" value="Alpha 2V" />
   </component>
 </project>

@@ -6,7 +6,7 @@ class Button:
         self.window = window
         width = image.get_width()
         height = image.get_height()
-        self.image = image
+        self.image = image.convert()
         self.image = pg.transform.scale(image, (int(width * scale), int(height * scale)))
         self.rect = self.image.get_rect()
         self.rect.topleft = (x, y)

@@ -16,6 +16,8 @@ class BuildMode:
         self.last_time = pg.time.get_ticks() - self.building[2]["Time_speed"]
         self.next_event = self.building[2]["Time_speed"]
         self.population = 0
+        self.current_electricity = 0
+        self.max_electricity = 0
         self.percent_residential = 0
         self.percent_commercial = 0
         self.percent_industrial = 0
@@ -29,7 +31,10 @@ class BuildMode:
         if (self.current_time - self.last_time) > self.next_event:
             self.current_date += relativedelta(months=1)  # Monatlich hochzählen
             self.last_time = self.current_time
+
             self.population = building_info["residential"]["instance"].event()
+            self.max_electricity, self.current_electricity = (building_info["power_plant"]["instance"].
+                                                              event(building_info))
 
             # Nachfrage ausrechnen
             res = building_info["residential"]["instance"].count
@@ -77,7 +82,7 @@ class BuildMode:
 
         font = pg.font.SysFont(None, 33)
 
-        population = f"{self.population}"
+        population = f"Population: {self.population}"
         population = font.render(population, True, (0, 0, 0))
         self.game_screen.blit(population, (365, 65))
 
@@ -93,6 +98,13 @@ class BuildMode:
 
         data = font.render(self.building[0]["Name"], True, (0, 0, 0))
         self.game_screen.blit(data, (630, 65))
+
+        if self.current_electricity <= self.max_electricity:
+            data = font.render(f"Electricity: {self.current_electricity} / {self.max_electricity}", True, (0, 0, 0))
+            self.game_screen.blit(data, (850, 65))
+        else:
+            data = font.render(f"Electricity: {self.current_electricity} / {self.max_electricity}", True, (255, 0, 0))
+            self.game_screen.blit(data, (850, 65))
 
         year = self.current_date.year
         month = self.current_date.month

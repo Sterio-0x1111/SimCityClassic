@@ -85,13 +85,18 @@ class MainMenuScene(Scene):
 
 
 class SettingsScene(Scene):
-    def __init__(self, game):
+    def __init__(self, game, is_game=False):
         super().__init__(game)
+        self.is_game = is_game
         self.background = pg.image.load("./image/Mainmenu.png")
         self.font = pg.font.SysFont(None, 55)
 
-        self.b4 = pg.image.load("./image/Back.png")
-        self.button_back = Button.Button(self.game.window, 134, 540, self.b4, 1.0)
+        if self.is_game:
+            self.b4 = pg.image.load("./image/Backgame.png")
+            self.button_back = Button.Button(self.game.window, 134, 540, self.b4, 1.0)
+        else:
+            self.b4 = pg.image.load("./image/Back.png")
+            self.button_back = Button.Button(self.game.window, 134, 540, self.b4, 1.0)
 
         self.b5 = pg.image.load("./image/Default.png")
         self.button_default = Button.Button(self.game.window, 600, 540, self.b5, 1.0)
@@ -114,11 +119,19 @@ class SettingsScene(Scene):
         self.key_right = self.font.render(self.controls[1]["manually"]["map_move_right"], True, (255, 255, 255))
 
     def handle_events(self):
-        super().handle_events()
+        for event in pg.event.get():
+            if self.is_game:
+                pass
+            else:
+                if event.type == pg.QUIT:
+                    self.running = False
         if self.button_back.push():
-            self.running = False  # Beende die aktuelle Szene
-            main_menu_scene = MainMenuScene(self.game)
-            main_menu_scene.run()
+            if self.is_game:
+                self.running = False
+            else:
+                self.running = False  # Beende die aktuelle Szene
+                main_menu_scene = MainMenuScene(self.game)
+                main_menu_scene.run()
 
         if self.button_default.push():
             for control_name, key in self.controls[0]["default"].items():
@@ -154,7 +167,7 @@ class SettingsScene(Scene):
 
                     if input_complete:
                         for control_name, key in self.controls[1]["manually"].items():
-                            if key == user_input:
+                            if key == user_input or key == pg.K_n or key == pg.K_m:
                                 input_complete = False
 
         return user_input
@@ -260,6 +273,11 @@ class GameScene(Scene):
         self.left_menu = pg.image.load("./image/Leftmenu.png")
         self.leftbelow = pg.image.load("./image/Leftbelow.png")
         self.bottom = pg.image.load("./image/Bottom.png")
+        self.top_menu = pg.image.load("./image/Topmenu.png")
+        self.dummy = pg.image.load("./image/Dummy.png")
+        self.back = Button.Button(self.game.window, 0, 0, pg.image.load("./image/Dummymenu.png"), 1.0)
+        self.options = Button.Button(self.game.window, 340, 0, pg.image.load("./image/Dummymenu_2.png"), 1.0)
+        self.exit_s = Button.Button(self.game.window, 765, 0, pg.image.load("./image/Dummymenu_3.png"), 1.0)
 
         # Button
         self.font = pg.font.SysFont(None, 33)
@@ -267,7 +285,7 @@ class GameScene(Scene):
         self.building_info = {
             "demolition": {
                 "instance": Demolition(self.game, 17),
-                "button": Button.Button(self.game.window, 4, 115, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 115, self.dummy, 1.0),
                 "button_xy": [4, 115],
                 "state": 17,
                 "cost": 1,
@@ -275,7 +293,7 @@ class GameScene(Scene):
             },
             "power_lines": {
                 "instance": PowerLines(self.game, 4),
-                "button": Button.Button(self.game.window, 4, 198, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 198, self.dummy, 1.0),
                 "button_xy": [4, 198],
                 "state": 4,
                 "cost": 5,
@@ -283,7 +301,7 @@ class GameScene(Scene):
             },
             "park": {
                 "instance": Park(self.game, 5, self.setting[1]["park"]),
-                "button": Button.Button(self.game.window, 4, 281, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 281, self.dummy, 1.0),
                 "button_xy": [4, 281],
                 "state": 5,
                 "cost": 50,
@@ -292,7 +310,7 @@ class GameScene(Scene):
             },
             "commercial": {
                 "instance": Commercial(self.game, 6, self.setting[1]["commercial"]),
-                "button": Button.Button(self.game.window, 4, 363, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 363, self.dummy, 1.0),
                 "button_xy": [4, 363],
                 "state": 6,
                 "cost": 150,
@@ -301,7 +319,7 @@ class GameScene(Scene):
             },
             "police_station": {
                 "instance": PoliceStation(self.game, 7, self.setting[1]["police_station"]),
-                "button": Button.Button(self.game.window, 4, 445, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 445, self.dummy, 1.0),
                 "button_xy": [4, 445],
                 "state": 7,
                 "cost": 500,
@@ -310,7 +328,7 @@ class GameScene(Scene):
             },
             "stadium": {
                 "instance": Stadium(self.game, 8, self.setting[1]["stadium"]),
-                "button": Button.Button(self.game.window, 4, 527, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 527, self.dummy, 1.0),
                 "button_xy": [4, 527],
                 "state": 8,
                 "cost": 2000,
@@ -319,7 +337,7 @@ class GameScene(Scene):
             },
             "ship_port": {
                 "instance": ShipPort(self.game, 9, self.setting[1]["ship_port"]),
-                "button": Button.Button(self.game.window, 4, 610, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 4, 610, self.dummy, 1.0),
                 "button_xy": [4, 610],
                 "state": 9,
                 "cost": 3000,
@@ -328,7 +346,7 @@ class GameScene(Scene):
             },
             "road": {
                 "instance": Road(self.game, 10, self.setting[1]["road"]),
-                "button": Button.Button(self.game.window, 76, 115, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 115, self.dummy, 1.0),
                 "button_xy": [76, 115],
                 "state": 10,
                 "cost": 10,
@@ -337,7 +355,7 @@ class GameScene(Scene):
             },
             "railroad": {
                 "instance": Railroad(self.game, 11, self.setting[1]["railroad"]),
-                "button": Button.Button(self.game.window, 76, 198, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 198, self.dummy, 1.0),
                 "button_xy": [76, 198],
                 "state": 11,
                 "cost": 15,
@@ -346,7 +364,7 @@ class GameScene(Scene):
             },
             "residential": {
                 "instance": Residential(self.game, 12, self.setting[1]["residential"], self.setting[2]["population"]),
-                "button": Button.Button(self.game.window, 76, 281, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 281, self.dummy, 1.0),
                 "button_xy": [76, 281],
                 "state": 12,
                 "cost": 100,
@@ -355,7 +373,7 @@ class GameScene(Scene):
             },
             "industrial": {
                 "instance": Industrial(self.game, 13, self.setting[1]["industrial"]),
-                "button": Button.Button(self.game.window, 76, 363, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 363, self.dummy, 1.0),
                 "button_xy": [76, 363],
                 "state": 13,
                 "cost": 200,
@@ -364,7 +382,7 @@ class GameScene(Scene):
             },
             "fire_station": {
                 "instance": FireStation(self.game, 14, self.setting[1]["fire_station"]),
-                "button": Button.Button(self.game.window, 76, 445, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 445, self.dummy, 1.0),
                 "button_xy": [76, 445],
                 "state": 14,
                 "cost": 500,
@@ -373,7 +391,7 @@ class GameScene(Scene):
             },
             "power_plant": {
                 "instance": PowerPlant(self.game, 15, self.setting[1]["power_plant"]),
-                "button": Button.Button(self.game.window, 76, 527, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 527, self.dummy, 1.0),
                 "button_xy": [76, 527],
                 "state": 15,
                 "cost": 5000,
@@ -382,7 +400,7 @@ class GameScene(Scene):
             },
             "airport": {
                 "instance": Airport(self.game, 16, self.setting[1]["airport"]),
-                "button": Button.Button(self.game.window, 76, 610, pg.image.load("./image/Dummy.png"), 1.0),
+                "button": Button.Button(self.game.window, 76, 610, self.dummy, 1.0),
                 "button_xy": [76, 610],
                 "state": 16,
                 "cost": 3000,
@@ -466,6 +484,40 @@ class GameScene(Scene):
                             if self.key_pressed[pg.K_m]:
                                 self.fields[idx]["state"] = 3
 
+        # Nur bei Druck, nicht sinnvoll, da redundant
+        if self.back.push():
+            self.running = False
+
+            # Speichern der Felder in JSON-Datei
+            try:
+                with open(self.game_path_map, "w") as json_file:
+                    json.dump(self.fields, json_file)
+                with open(self.game_path_setting, "w") as json_file:
+                    json.dump(self.setting, json_file)
+            except FileNotFoundError:
+                print("Error")
+                exit()
+
+            init = MainMenuScene(self.game)
+            init.run()
+
+        if self.exit_s.push():
+            self.running = False
+
+            # Speichern der Felder in JSON-Datei
+            try:
+                with open(self.game_path_map, "w") as json_file:
+                    json.dump(self.fields, json_file)
+                with open(self.game_path_setting, "w") as json_file:
+                    json.dump(self.setting, json_file)
+            except FileNotFoundError:
+                print("Error")
+                exit()
+
+        if self.options.push():
+            init = SettingsScene(self.game, True)
+            init.run()
+
     def update(self):
         keys = pg.key.get_pressed()
         move_up_key = ord(self.controls[1]["manually"]["map_move_up"])
@@ -507,14 +559,14 @@ class GameScene(Scene):
             y = field["y"]
             state = field["state"]
 
-            type = None
+            type_i = None
             for building, info in self.building_info.items():
                 if state == info["state"]:
-                    type = info["instance"]
+                    type_i = info["instance"]
                     break
 
             if state not in (1, 2, 3, 17):
-                type.draw(self.grid_surface, x, y)
+                type_i.draw(self.grid_surface, x, y)
             elif state in (1, 17):
                 self.grid_surface.blit(self.grid_image_ground, (x, y))
             elif state == 2:
@@ -542,6 +594,11 @@ class GameScene(Scene):
                     text = info["text"]
                     self.screen.blit(text, (155, 800))
             button.draw()
+
+        # Menu
+        self.back.draw()
+        self.options.draw()
+        self.exit_s.draw()
 
         self.screen.blit(self.top_menu, (0, 0))
         self.screen.blit(self.top, (0, 50))
