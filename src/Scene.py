@@ -266,6 +266,7 @@ class GameScene(Scene):
 
         self.building_info = {
             "demolition": {
+                "instance": Demolition(self.game, 17),
                 "button": Button.Button(self.game.window, 4, 115, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 115],
                 "state": 17,
@@ -273,6 +274,7 @@ class GameScene(Scene):
                 "text": self.font.render("Demolition: 1€", True, self.BLUE)
             },
             "power_lines": {
+                "instance": PowerLines(self.game, 4),
                 "button": Button.Button(self.game.window, 4, 198, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 198],
                 "state": 4,
@@ -280,88 +282,112 @@ class GameScene(Scene):
                 "text": self.font.render("Power lines: 5€", True, self.BLUE)
             },
             "park": {
+                "instance": Park(self.game, 5, self.setting[1]["park"]),
                 "button": Button.Button(self.game.window, 4, 281, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 281],
                 "state": 5,
                 "cost": 50,
-                "text": self.font.render("Park: 50€", True, self.BLUE)
+                "expense": 5,
+                "text": self.font.render("Park: 50€, per month: 5€", True, self.BLUE)
             },
             "commercial": {
+                "instance": Commercial(self.game, 6, self.setting[1]["commercial"]),
                 "button": Button.Button(self.game.window, 4, 363, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 363],
                 "state": 6,
                 "cost": 150,
-                "text": self.font.render("Commercial: 150€", True, self.BLUE)
+                "profit": 10,
+                "text": self.font.render("Commercial: 150€, tax: 10€", True, self.BLUE)
             },
             "police_station": {
+                "instance": PoliceStation(self.game, 7, self.setting[1]["police_station"]),
                 "button": Button.Button(self.game.window, 4, 445, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 445],
                 "state": 7,
                 "cost": 500,
-                "text": self.font.render("Police station: 500€", True, self.BLUE)
+                "expense": 80,
+                "text": self.font.render("Police station: 500€, per month: 80€", True, self.BLUE)
             },
             "stadium": {
+                "instance": Stadium(self.game, 8, self.setting[1]["stadium"]),
                 "button": Button.Button(self.game.window, 4, 527, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 527],
                 "state": 8,
                 "cost": 2000,
-                "text": self.font.render("Stadium: 2000€", True, self.BLUE)
+                "expense": 50,
+                "text": self.font.render("Stadium: 2000€, per month: 50€", True, self.BLUE)
             },
             "ship_port": {
+                "instance": ShipPort(self.game, 9, self.setting[1]["ship_port"]),
                 "button": Button.Button(self.game.window, 4, 610, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [4, 610],
                 "state": 9,
                 "cost": 3000,
-                "text": self.font.render("Ship port: 3000€", True, self.BLUE)
+                "expense": 100,
+                "text": self.font.render("Ship port: 3000€, per month: 100€", True, self.BLUE)
             },
             "road": {
+                "instance": Road(self.game, 10, self.setting[1]["road"]),
                 "button": Button.Button(self.game.window, 76, 115, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 115],
                 "state": 10,
                 "cost": 10,
-                "text": self.font.render("Road: 10€", True, self.BLUE)
+                "expense": 0.50,
+                "text": self.font.render("Road: 10€, per month: 0,50€", True, self.BLUE)
             },
             "railroad": {
+                "instance": Railroad(self.game, 11, self.setting[1]["railroad"]),
                 "button": Button.Button(self.game.window, 76, 198, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 198],
                 "state": 11,
                 "cost": 15,
-                "text": self.font.render("Railroad: 15€", True, self.BLUE)
+                "expense": 1,
+                "text": self.font.render("Railroad: 15€, per month: 1€", True, self.BLUE)
             },
             "residential": {
+                "instance": Residential(self.game, 12, self.setting[1]["residential"], self.setting[2]["population"]),
                 "button": Button.Button(self.game.window, 76, 281, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 281],
                 "state": 12,
                 "cost": 100,
-                "text": self.font.render("Residential: 100€", True, self.BLUE)
+                "profit": 0.5,
+                "text": self.font.render("Residential: 100€, tax: 0,50€", True, self.BLUE)
             },
             "industrial": {
+                "instance": Industrial(self.game, 13, self.setting[1]["industrial"]),
                 "button": Button.Button(self.game.window, 76, 363, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 363],
                 "state": 13,
                 "cost": 200,
-                "text": self.font.render("Industrial: 200€", True, self.BLUE)
+                "profit": 20,
+                "text": self.font.render("Industrial: 200€, tax: 20€", True, self.BLUE)
             },
             "fire_station": {
+                "instance": FireStation(self.game, 14, self.setting[1]["fire_station"]),
                 "button": Button.Button(self.game.window, 76, 445, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 445],
                 "state": 14,
                 "cost": 500,
-                "text": self.font.render("Fire station: 500€", True, self.BLUE)
+                "expense": 80,
+                "text": self.font.render("Fire station: 500€, per month: 80€", True, self.BLUE)
             },
             "power_plant": {
+                "instance": PowerPlant(self.game, 15, self.setting[1]["power_plant"]),
                 "button": Button.Button(self.game.window, 76, 527, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 527],
                 "state": 15,
                 "cost": 5000,
-                "text": self.font.render("Power plant: 5000€", True, self.BLUE)
+                "expense": 400,
+                "text": self.font.render("Power plant: 5000€, per month: 400€", True, self.BLUE)
             },
             "airport": {
+                "instance": Airport(self.game, 16, self.setting[1]["airport"]),
                 "button": Button.Button(self.game.window, 76, 610, pg.image.load("./image/Dummy.png"), 1.0),
                 "button_xy": [76, 610],
                 "state": 16,
                 "cost": 3000,
-                "text": self.font.render("Airport: 3000€", True, self.BLUE)
+                "expense": 100,
+                "text": self.font.render("Airport: 3000€, per month: 100€", True, self.BLUE)
             }
         }
 
@@ -419,9 +445,20 @@ class GameScene(Scene):
                                     if self.fields[idx]["state"] != self.selected_building_type:
                                         for i, info in self.building_info.items():
                                             if info["state"] == self.selected_building_type:
-                                                if (self.budget.budget - info["cost"]) >= 0:
+                                                if (self.budget.budget - info["cost"]) > 0:
+                                                    prev = self.fields[idx]["state"]
                                                     self.fields[idx]["state"] = self.selected_building_type
                                                     self.budget.update(info["cost"])
+                                                    if info["state"] in (5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17):
+                                                        if info["state"] == 17:
+                                                            # vorherigen status ermitteln
+                                                            for v, c in self.building_info.items():
+                                                                if c["state"] == prev:
+                                                                    c["instance"].handle_events()
+                                                                    self.setting[1][v] = c["instance"].count
+                                                        else:
+                                                            info["instance"].update()
+                                                            self.setting[1][i] = info["instance"].count
 
                             # In der Vollversion nicht mehr enthalten
                             if self.key_pressed[pg.K_n]:
@@ -457,29 +494,12 @@ class GameScene(Scene):
         self.mouse_x //= self.CELL_SIZE
         self.mouse_y //= self.CELL_SIZE
 
-        self.time.update(self.budget)
+        for i, data in self.building_info.items():
+            if data["state"] == 12:
+                self.setting[2]["population"] = data["instance"].population
+        self.time.update(self.budget, self.building_info)
 
     def draw(self):
-        building_classes = {
-            1: "GroundBuilding",
-            2: "ForestBuilding",
-            3: "WaterBuilding",
-            4: PowerLines,
-            5: Park,
-            6: Commercial,
-            7: PoliceStation,
-            8: Stadium,
-            9: ShipPort,
-            10: Road,
-            11: Railroad,
-            12: Residential,
-            13: Industrial,
-            14: FireStation,
-            15: PowerPlant,
-            16: Airport,
-            17: Demolition,
-        }
-
         # Es wäre sinnvoll, den sichtbaren Bereich zu verwenden, aber der
         # Algorithmus dafür ist mir momentan nicht klar.
         for field in self.fields:
@@ -487,13 +507,15 @@ class GameScene(Scene):
             y = field["y"]
             state = field["state"]
 
-            building_class = building_classes.get(state)
+            type = None
+            for building, info in self.building_info.items():
+                if state == info["state"]:
+                    type = info["instance"]
+                    break
 
-            if state not in (1, 2, 3):
-                if building_class:
-                    dummy = building_class(self.game, state, y, x)
-                    dummy.draw(self.grid_surface)
-            elif state == 1:
+            if state not in (1, 2, 3, 17):
+                type.draw(self.grid_surface, x, y)
+            elif state in (1, 17):
                 self.grid_surface.blit(self.grid_image_ground, (x, y))
             elif state == 2:
                 self.grid_surface.blit(self.grid_image_forest, (x, y))
