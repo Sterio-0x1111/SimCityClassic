@@ -3,7 +3,7 @@ This is a "replica" of a game from the year 1989.
 
 The current functional version is 1.0.0-alpha, while the version in the repository is Alpha 5.0.0V.
 
-## Possible occurring errors:
+## Possible occurring errors
 - In the settings, it may happen that some buttons do not work; in that case, simply press the next working button.
 - In the current version, it is not possible to display the input of name and time (create a city).
 - You can, however, confirm with the Enter key. In the case of the 'name' input, characters must not exceed 10 characters, and special characters like "☼" are not allowed.
