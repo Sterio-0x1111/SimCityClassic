@@ -1,5 +1,6 @@
 import pygame as pg
 import json
+import re
 import Button
 import FileSelection
 from Building import *
@@ -53,9 +54,8 @@ class MainMenuScene(Scene):
         super().handle_events()
         if self.button_play.push():
             self.running = False
-            game_scene = GameScene(self.game, "../map/Field.json", "../setting/Setting.json")
-            super().handle_events()
-            game_scene.run()
+            create_scene = CreateScene(self.game)
+            create_scene.run()
 
         elif self.button_load.push():
             self.running = False
@@ -68,9 +68,11 @@ class MainMenuScene(Scene):
                     super().handle_events()
                     game_scene.run()
                 else:
-                    pass
+                    exit()
+                    print("Error")
             else:
-                pass
+                exit()
+                print("Error")
 
         elif self.button_Settings.push():
             self.running = False
@@ -82,6 +84,178 @@ class MainMenuScene(Scene):
         self.button_play.draw()
         self.button_load.draw()
         self.button_Settings.draw()
+
+
+class CreateScene(Scene):
+    def __init__(self, game):
+        super().__init__(game)
+        self.background = pg.image.load("../image/Mainmenu.png")
+
+        self.b6 = pg.image.load("../image/START_NEW_CITY.png")
+        self.button_play = Button.Button(game.window, 600, 535, self.b6, 1.0)
+
+        self.b7 = pg.image.load("../image/Back.png")
+        self.button_back = Button.Button(game.window, 134, 540, self.b7, 1.0)
+
+        self.name = pg.image.load("../image/Name.png")
+        self.button_name = Button.Button(game.window, 134, 358.5, self.name, 1.0)
+
+        self.time = pg.image.load("../image/Time.png")
+        self.button_time = Button.Button(game.window, 600, 358.5, self.time, 1.0)
+
+        self.difficult = pg.image.load("../image/Difficult.png")
+        self.normal = pg.image.load("../image/Normal.png")
+        self.easy = pg.image.load("../image/Easy.png")
+
+        self.select_button = {
+            "difficult": {
+                "button": Button.Button(game.window, 761, 450, self.difficult, 1.0),
+                "button_xy": [761, 450],
+                "select": False
+            },
+            "normal": {
+                "button": Button.Button(game.window, 448, 450, self.normal, 1.0),
+                "button_xy": [448, 450],
+                "select": False
+            },
+            "easy": {
+                "button": Button.Button(game.window, 136, 450, self.easy, 1.0),
+                "button_xy": [136, 450],
+                "select": False
+            }
+        }
+
+        self.user_input = ""
+        self.time_t = 0
+        self.name_t = None
+        self.fields = None
+        self.setting = None
+
+        self.name_d = None
+        self.time_d = None
+
+        self.font = pg.font.SysFont(None, 43)
+        self.complete = [False, False, False]
+
+    def handle_events(self):
+        super().handle_events()
+        if self.complete[0] and self.complete[1] and self.complete[2]:
+            if self.button_play.push():
+                self.running = False
+                try:
+                    with open("../map/Backup/Field_200.json", "r") as json_file:
+                        self.fields = json.load(json_file)
+                    with open("../setting/Backup/Setting_Default.json", "r") as json_file:
+                        self.setting = json.load(json_file)
+                except FileNotFoundError:
+                    print("Error")
+                    exit()
+
+                self.setting[0]["Name"] = self.name_t
+                self.setting[2]["Time_speed"] = self.time_t
+                if self.select_button["difficult"]["select"]:
+                    self.setting[0]["Budget"] = 10000
+                elif self.select_button["normal"]["select"]:
+                    self.setting[0]["Budget"] = 15000
+                else:
+                    self.setting[0]["Budget"] = 20000
+
+                self.name_t = re.sub(r'[^a-zA-Z0-9_-]', '', self.name_t)
+                file_path = f"../map/{self.name_t}_Map.json"
+                file_path_setting = f"../setting/{self.name_t}_Setting.json"
+
+                # Speichern der Felder in JSON-Datei
+                try:
+                    with open(file_path, "w") as json_file:
+                        json.dump(self.fields, json_file)
+                    with open(file_path_setting, "w") as json_file:
+                        json.dump(self.setting, json_file)
+                except FileNotFoundError:
+                    print("Error")
+                    exit()
+
+                game_scene = GameScene(self.game, file_path, file_path_setting)
+                super().handle_events()
+                game_scene.run()
+
+        if self.button_back.push():
+            self.running = False
+            main_menu_scene = MainMenuScene(self.game)
+            main_menu_scene.run()
+
+        if self.button_name.push():
+            self.input()
+            self.name_d = self.font.render(self.user_input, True, (255, 255, 255))
+            self.name_t = self.user_input
+            self.user_input = ""
+            self.complete[0] = True
+
+        if self.button_time.push():
+            while not self.user_input.isdigit():
+                self.user_input = ""
+                while len(self.user_input) == 0 or len(self.user_input) > 5:
+                    self.input()
+                    self.time_d = self.font.render(self.user_input, True, (255, 255, 255))
+
+            self.time_t = int(self.user_input)
+            self.user_input = ""
+            self.complete[1] = True
+
+        if self.select_button["difficult"]["button"].push():
+            self.select_button["difficult"]["select"] = True
+            self.select_button["normal"]["select"] = False
+            self.select_button["easy"]["select"] = False
+            self.complete[2] = True
+
+        if self.select_button["normal"]["button"].push():
+            self.select_button["normal"]["select"] = True
+            self.select_button["difficult"]["select"] = False
+            self.select_button["easy"]["select"] = False
+            self.complete[2] = True
+
+        if self.select_button["easy"]["button"].push():
+            self.select_button["easy"]["select"] = True
+            self.select_button["difficult"]["select"] = False
+            self.select_button["normal"]["select"] = False
+            self.complete[2] = True
+
+    def input(self):
+        input_complete = False
+        while not input_complete:
+            for event in pg.event.get():
+                if event.type == pg.KEYDOWN:
+                    if event.unicode:
+                        self.user_input += event.unicode
+                elif event.type == pg.KEYUP:
+                    if event.key == pg.K_RETURN:
+                        if len(self.user_input) <= 11:
+                            # Die Eingabe ist abgeschlossen, wenn die Eingabetaste gedrückt wird
+                            self.user_input = self.user_input[:-1]
+                            input_complete = True
+                        else:
+                            self.user_input = ""
+
+    def draw(self):
+        self.screen.blit(self.background, (0, 0))
+        self.button_play.draw()
+        self.button_back.draw()
+
+        self.button_name.draw()
+        self.button_time.draw()
+
+        self.select_button["difficult"]["button"].draw()
+        self.select_button["normal"]["button"].draw()
+        self.select_button["easy"]["button"].draw()
+
+        for button, info in self.select_button.items():
+            if info["select"]:
+                pg.draw.rect(self.screen, (255, 255, 0), (info["button_xy"][0], info["button_xy"][1], 300, 87), 3)
+
+        if self.complete[0]:
+            self.screen.blit(self.name_d, (275, 391))
+
+        if self.complete[1]:
+            self.screen.blit(self.time_d, (926, 392))
 
 
 class SettingsScene(Scene):
@@ -283,6 +457,7 @@ class GameScene(Scene):
         # Button
         self.font = pg.font.SysFont(None, 33)
 
+        # Wäre sinnvoll, wenn JSON
         self.building_info = {
             "demolition": {
                 "instance": Demolition(self.game, 17),
@@ -485,8 +660,8 @@ class GameScene(Scene):
                             if self.key_pressed[pg.K_m]:
                                 self.fields[idx]["state"] = 3
 
-        # Nur bei Druck, nicht sinnvoll, da redundant
-        if self.back.push():
+        # Nur bei Druck
+        if self.back.push() or self.exit_s.push():
             self.running = False
 
             # Speichern der Felder in JSON-Datei
@@ -499,21 +674,9 @@ class GameScene(Scene):
                 print("Error")
                 exit()
 
-            init = MainMenuScene(self.game)
-            init.run()
-
-        if self.exit_s.push():
-            self.running = False
-
-            # Speichern der Felder in JSON-Datei
-            try:
-                with open(self.game_path_map, "w") as json_file:
-                    json.dump(self.fields, json_file)
-                with open(self.game_path_setting, "w") as json_file:
-                    json.dump(self.setting, json_file)
-            except FileNotFoundError:
-                print("Error")
-                exit()
+            if self.back.push():
+                init = MainMenuScene(self.game)
+                init.run()
 
         if self.options.push():
             init = SettingsScene(self.game, True)
